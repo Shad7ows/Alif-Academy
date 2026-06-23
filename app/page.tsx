@@ -534,19 +534,22 @@ export default function AlifProPlatform() {
   const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
-  const [userData, setUserData] = useState(() => {
+  const [userData, setUserData] = useState<UserData>({
+    completedLessons: [],
+    xp: 0,
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load from localStorage AFTER hydration
+  useEffect(() => {
     try {
       const saved = localStorage.getItem("alifProV3Data");
-      if (saved) return JSON.parse(saved);
+      if (saved) setUserData(JSON.parse(saved));
     } catch (e) {
       console.error("Error loading save data", e);
     }
-    // Fallback default
-    return {
-      completedLessons: [],
-      xp: 0,
-    };
-  });
+    setIsLoaded(true);
+  }, []);
 
   // Save user data
   useEffect(() => {
@@ -555,7 +558,7 @@ export default function AlifProPlatform() {
     } catch (e) {
       console.error("Error saving data", e);
     }
-  }, [userData]);
+  }, [userData, isLoaded]);
 
   const activeChapter = CHAPTERS[activeChapterIndex];
   const activeLesson = activeChapter?.lessons[activeLessonIndex];
