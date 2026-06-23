@@ -538,7 +538,6 @@ export default function AlifProPlatform() {
     completedLessons: [],
     xp: 0,
   });
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load from localStorage AFTER hydration
   useEffect(() => {
@@ -548,7 +547,6 @@ export default function AlifProPlatform() {
     } catch (e) {
       console.error("Error loading save data", e);
     }
-    setIsLoaded(true);
   }, []);
 
   // Save user data
@@ -558,7 +556,7 @@ export default function AlifProPlatform() {
     } catch (e) {
       console.error("Error saving data", e);
     }
-  }, [userData, isLoaded]);
+  }, [userData]);
 
   const activeChapter = CHAPTERS[activeChapterIndex];
   const activeLesson = activeChapter?.lessons[activeLessonIndex];
