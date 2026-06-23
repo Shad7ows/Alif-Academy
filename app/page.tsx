@@ -327,11 +327,11 @@ const CHAPTERS = [
   },
 ];
 
-const highlightAlif = (code) => {
+const highlightAlif = (code: string) => {
   if (!code) return "";
   let h = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  const tokens = [];
+  const tokens: string[] = [];
   let tokenIdx = 0;
 
   h = h.replace(/(["'])(.*?)\1/g, (match) => {
@@ -398,8 +398,18 @@ const highlightAlif = (code) => {
   return h;
 };
 
-const IDEBlock = ({ code, expectedOutput, showRunButton = false }) => {
-  const [output, setOutput] = useState(null);
+interface IDEBlockProps {
+  code: string; // source code to display/edit
+  expectedOutput?: string; // expected console/output result (optional)
+  showRunButton?: boolean;
+}
+
+const IDEBlock = ({
+  code,
+  expectedOutput,
+  showRunButton = false,
+}: IDEBlockProps) => {
+  const [output, setOutput] = useState<null | string>("");
   const [isRunning, setIsRunning] = useState(false);
   const lines = code.split("\n");
 
@@ -487,7 +497,7 @@ const IDEBlock = ({ code, expectedOutput, showRunButton = false }) => {
   );
 };
 
-const formatContent = (text) => {
+const formatContent = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
@@ -515,24 +525,28 @@ const formatContent = (text) => {
   });
 };
 
+interface UserData {
+  completedLessons: string[];
+  xp: number;
+}
+
 export default function AlifProPlatform() {
   const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
-  const [userData, setUserData] = useState({
-    completedLessons: [],
-    xp: 0,
-  });
-
-  // Load user data
-  useEffect(() => {
+  const [userData, setUserData] = useState(() => {
     try {
       const saved = localStorage.getItem("alifProV3Data");
-      if (saved) setUserData(JSON.parse(saved));
+      if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error("Error loading save data", e);
     }
-  }, []);
+    // Fallback default
+    return {
+      completedLessons: [],
+      xp: 0,
+    };
+  });
 
   // Save user data
   useEffect(() => {
@@ -547,13 +561,13 @@ export default function AlifProPlatform() {
   const activeLesson = activeChapter?.lessons[activeLessonIndex];
 
   // Navigation Helpers
-  const openChapter = (index) => {
+  const openChapter = (index: number) => {
     setActiveChapterIndex(index);
     setView("chapter");
     window.scrollTo(0, 0);
   };
 
-  const startLesson = (index) => {
+  const startLesson = (index: number) => {
     setActiveLessonIndex(index);
     setView("lesson");
     window.scrollTo(0, 0);
@@ -569,7 +583,7 @@ export default function AlifProPlatform() {
       activeLesson.id
     );
     if (!isAlreadyCompleted) {
-      setUserData((prev) => ({
+      setUserData((prev: UserData) => ({
         ...prev,
         completedLessons: [...prev.completedLessons, activeLesson.id],
         xp: prev.xp + 25, // 25 XP per lesson
@@ -604,7 +618,7 @@ export default function AlifProPlatform() {
     return (
       <div className="max-w-4xl mx-auto animate-fade-in pb-20">
         <div className="bg-white rounded-3xl p-8 mb-10 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
-          <div className="absolute -right-20 -top-20 w-64 h-64 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full blur-3xl opacity-70 group-hover:opacity-100 transition-opacity"></div>
+          <div className="absolute -right-20 -top-20 w-64 h-64 bg-linear-to-br from-indigo-50 to-purple-50 rounded-full blur-3xl opacity-70 group-hover:opacity-100 transition-opacity"></div>
           <div className="relative z-10 text-center md:text-right">
             <h2 className="text-3xl font-black text-slate-800 mb-2">
               تابع رحلتك البرمجية 🚀
@@ -620,7 +634,7 @@ export default function AlifProPlatform() {
             </p>
           </div>
           <div className="relative z-10 flex gap-4">
-            <div className="bg-amber-50 border border-amber-200 px-6 py-4 rounded-2xl flex flex-col items-center min-w-[120px]">
+            <div className="bg-amber-50 border border-amber-200 px-6 py-4 rounded-2xl flex flex-col items-center min-w-30">
               <Star className="text-amber-500 w-8 h-8 mb-1 fill-amber-500" />
               <span className="text-2xl font-black text-amber-600">
                 {userData.xp}
@@ -661,14 +675,14 @@ export default function AlifProPlatform() {
                 <div
                   className={`w-24 h-24 rounded-3xl shrink-0 flex items-center justify-center shadow-lg border-4 z-10 transition-transform ${
                     isFullyCompleted
-                      ? "bg-gradient-to-br from-emerald-400 to-emerald-500 border-white text-white"
+                      ? "bg-linear-to-br from-emerald-400 to-emerald-500 border-white text-white"
                       : isLocked
                       ? "bg-slate-200 border-white text-slate-400"
-                      : `bg-gradient-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
+                      : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
                   }`}
                 >
                   {isFullyCompleted ? (
-                    <Check className="w-10 h-10 stroke-[3]" />
+                    <Check className="w-10 h-10 stroke-3" />
                   ) : isLocked ? (
                     <Lock className="w-10 h-10" />
                   ) : (
@@ -721,9 +735,9 @@ export default function AlifProPlatform() {
           <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
         </button>
 
-        <div className="bg-white rounded-[2rem] p-8 shadow-sm border border-slate-200 mb-10 text-center">
+        <div className="bg-white rounded-4xl p-8 shadow-sm border border-slate-200 mb-10 text-center">
           <div
-            className={`w-20 h-20 mx-auto rounded-3xl mb-4 flex items-center justify-center bg-gradient-to-br ${activeChapter.color} text-white shadow-lg`}
+            className={`w-20 h-20 mx-auto rounded-3xl mb-4 flex items-center justify-center bg-linear-to-br ${activeChapter.color} text-white shadow-lg`}
           >
             <activeChapter.icon className="w-10 h-10" />
           </div>
@@ -838,10 +852,10 @@ export default function AlifProPlatform() {
         <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
       </button>
 
-      <div className="bg-white rounded-[2rem] p-8 md:p-12 shadow-sm border border-slate-200">
+      <div className="bg-white rounded-4xl p-8 md:p-12 shadow-sm border border-slate-200">
         <div className="flex items-center gap-4 mb-10">
           <div
-            className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-gradient-to-br ${activeChapter.color} text-white shadow-lg`}
+            className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-linear-to-br ${activeChapter.color} text-white shadow-lg`}
           >
             {activeLesson.icon ? (
               <activeLesson.icon className="w-8 h-8" />
@@ -883,7 +897,7 @@ export default function AlifProPlatform() {
 
   const QuizView = () => {
     const quiz = activeLesson.quiz;
-    const [selectedOpt, setSelectedOpt] = useState(null);
+    const [selectedOpt, setSelectedOpt] = useState<null | number>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const isCorrect = selectedOpt === quiz.correctAnswer;
 
@@ -972,9 +986,9 @@ export default function AlifProPlatform() {
                 }`}
               >
                 {isCorrect ? (
-                  <Check className="w-8 h-8 stroke-[3]" />
+                  <Check className="w-8 h-8 stroke-3" />
                 ) : (
-                  <XCircle className="w-8 h-8 stroke-[3]" />
+                  <XCircle className="w-8 h-8 stroke-3" />
                 )}
               </div>
               <div>
