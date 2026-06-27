@@ -891,67 +891,87 @@ export default function AlifProPlatform() {
     const isCorrect = selectedOpt === quiz.correctAnswer;
 
     return (
-      <div className="max-w-3xl mx-auto animate-fade-in-up pb-32">
-        <div className="flex items-center gap-4 mb-8">
-          <button
-            onClick={() => setView("lesson")}
-            className="text-slate-400 hover:text-slate-800"
-          >
-            <XCircle className="w-8 h-8" />
-          </button>
-          <div className="flex-1 bg-slate-200 h-4 rounded-full overflow-hidden">
-            <div className="bg-indigo-500 h-full w-1/2 rounded-full"></div>
+      <>
+        <div className="max-w-3xl mx-auto animate-fade-in-up pb-32">
+          <div className="flex items-center gap-4 mb-8">
+            <button
+              onClick={() => setView("lesson")}
+              className="text-slate-400 hover:text-slate-800"
+            >
+              <XCircle className="w-8 h-8" />
+            </button>
+            <div className="flex-1 bg-slate-200 h-4 rounded-full overflow-hidden">
+              <div className="bg-indigo-500 h-full w-1/2 rounded-full"></div>
+            </div>
           </div>
-        </div>
 
-        <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 leading-tight">
-          {quiz.question}
-        </h2>
-        {quiz.code && (
-          <div className="mb-10">
-            <IDEBlock code={quiz.code} />
-          </div>
-        )}
+          <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 leading-tight">
+            {quiz.question}
+          </h2>
+          {quiz.code && (
+            <div className="mb-10">
+              <IDEBlock code={quiz.code} />
+            </div>
+          )}
 
-        <div className="grid gap-4">
-          {quiz.options.map((opt, idx) => {
-            let stateClass =
-              "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700";
-            if (isSubmitted) {
-              if (idx === quiz.correctAnswer)
+          <div className="grid gap-4">
+            {quiz.options.map((opt, idx) => {
+              let stateClass =
+                "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700";
+              if (isSubmitted) {
+                if (idx === quiz.correctAnswer)
+                  stateClass =
+                    "bg-emerald-50 border-emerald-500 text-emerald-800 ring-4 ring-emerald-500/20";
+                else if (idx === selectedOpt)
+                  stateClass = "bg-rose-50 border-rose-500 text-rose-800";
+                else
+                  stateClass =
+                    "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
+              } else if (selectedOpt === idx) {
                 stateClass =
-                  "bg-emerald-50 border-emerald-500 text-emerald-800 ring-4 ring-emerald-500/20";
-              else if (idx === selectedOpt)
-                stateClass = "bg-rose-50 border-rose-500 text-rose-800";
-              else
-                stateClass =
-                  "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
-            } else if (selectedOpt === idx) {
-              stateClass =
-                "bg-indigo-50 border-indigo-500 text-indigo-800 ring-4 ring-indigo-500/20";
-            }
+                  "bg-indigo-50 border-indigo-500 text-indigo-800 ring-4 ring-indigo-500/20";
+              }
 
-            return (
-              <button
-                key={idx}
-                onClick={() => !isSubmitted && setSelectedOpt(idx)}
-                disabled={isSubmitted}
-                className={`p-6 rounded-2xl text-xl font-bold text-right transition-all border-2 flex justify-between items-center ${stateClass}`}
-              >
-                <span dir="ltr" className="text-right w-full font-mono">
-                  {opt}
-                </span>
-                {isSubmitted && idx === quiz.correctAnswer && (
-                  <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0 ml-4 animate-bounce-in" />
-                )}
-                {isSubmitted &&
-                  idx === selectedOpt &&
-                  idx !== quiz.correctAnswer && (
-                    <XCircle className="w-8 h-8 text-rose-500 shrink-0 ml-4 animate-bounce-in" />
+              return (
+                <button
+                  key={idx}
+                  onClick={() => !isSubmitted && setSelectedOpt(idx)}
+                  disabled={isSubmitted}
+                  className={`p-6 rounded-2xl text-xl font-bold text-right transition-all border-2 flex justify-between items-center ${stateClass}`}
+                >
+                  <span dir="ltr" className="text-right w-full font-mono">
+                    {opt}
+                  </span>
+                  {isSubmitted && idx === quiz.correctAnswer && (
+                    <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0 ml-4 animate-bounce-in" />
                   )}
-              </button>
-            );
-          })}
+                  {isSubmitted &&
+                    idx === selectedOpt &&
+                    idx !== quiz.correctAnswer && (
+                      <XCircle className="w-8 h-8 text-rose-500 shrink-0 ml-4 animate-bounce-in" />
+                    )}
+                </button>
+              );
+            })}
+          </div>
+
+          {!isSubmitted && (
+            <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-200 z-40">
+              <div className="max-w-3xl mx-auto">
+                <button
+                  onClick={() => selectedOpt !== null && setIsSubmitted(true)}
+                  disabled={selectedOpt === null}
+                  className={`w-full py-5 rounded-2xl font-black text-xl transition-all ${
+                    selectedOpt !== null
+                      ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30"
+                      : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                  }`}
+                >
+                  تحقق من الإجابة
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div
@@ -1016,25 +1036,7 @@ export default function AlifProPlatform() {
             </button>
           </div>
         </div>
-
-        {!isSubmitted && (
-          <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-200 z-40">
-            <div className="max-w-3xl mx-auto">
-              <button
-                onClick={() => selectedOpt !== null && setIsSubmitted(true)}
-                disabled={selectedOpt === null}
-                className={`w-full py-5 rounded-2xl font-black text-xl transition-all ${
-                  selectedOpt !== null
-                    ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30"
-                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
-                }`}
-              >
-                تحقق من الإجابة
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
+      </>
     );
   };
 
