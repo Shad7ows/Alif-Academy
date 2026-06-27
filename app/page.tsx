@@ -44,7 +44,7 @@ const CHAPTERS = [
         title: "أهلاً بك في عالم ألف",
         icon: Code2,
         content:
-          "لغة **ألف** صُممت لتكون بديهية. للتواصل مع الحاسوب وجعله يعرض رسالة، نستخدم أمر `اطبع`.\n\nلتخزين معلومة (مثل اسمك) لاستخدامها لاحقاً، نقوم بإنشاء **متغير** ببساطة بكتابة اسمه ثم علامة التساوي `=`. \n\n*اضغط على زر التشغيل بالأسفل لترى كيف يعمل الكود.*",
+          "لغة **ألف** صُممت لتكون بديهية. للتواصل مع الحاسوب وجعله يعرض رسالة، نستخدم أمر `اطبع`.\n\nلتخزين معلومة (مثل اسمك) لاستخدامها لاحقاً، نقوم بإنشاء **متغير** ببساطة بكتابة اسمه ثم علامة التساوي `=`. \n\n*اضغط على زر التشغيل بالأسفل لترى كيف تعمل الشفرة.*",
         code: 'الاسم = "طارق"\nالنقاط = 100\n\nاطبع("مرحباً بك يا " + الاسم)\nاطبع("نقاطك الحالية هي: " + النقاط)',
         expectedOutput: "مرحباً بك يا طارق\nنقاطك الحالية هي: 100",
         quiz: {
@@ -344,7 +344,7 @@ const highlightAlif = (code: string) => {
     (match, p1, p2) => {
       tokens.push(`<span class="text-orange-300">${p2}</span>`);
       return `${p1}__TOKEN_${tokenIdx++}_END__`;
-    }
+    },
   );
 
   const keywords = [
@@ -376,7 +376,7 @@ const highlightAlif = (code: string) => {
   keywords.forEach((kw) => {
     const reg = new RegExp(
       `(^|\\s|\\(|\\)|\\[|\\]|:)(${kw})(?=\\s|\\(|\\)|\\[|\\]|:|$)`,
-      "g"
+      "g",
     );
     h = h.replace(reg, (match, p1, p2) => {
       tokens.push(`<span class="text-pink-400 font-bold">${p2}</span>`);
@@ -389,7 +389,7 @@ const highlightAlif = (code: string) => {
     (match) => {
       tokens.push(`<span class="text-cyan-400">${match}</span>`);
       return `__TOKEN_${tokenIdx++}_END__`;
-    }
+    },
   );
 
   for (let i = tokenIdx - 1; i >= 0; i--) {
@@ -424,7 +424,7 @@ const IDEBlock = ({
 
   return (
     <div
-      className="rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-[#0d1117] my-6 font-mono text-right"
+      className="rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-[#0d1117] my-6 font-Tajawal text-right"
       dir="rtl"
     >
       <div className="bg-slate-800 px-4 py-3 flex items-center justify-between border-b border-slate-700">
@@ -467,7 +467,8 @@ const IDEBlock = ({
               </>
             ) : (
               <>
-                تشغيل الكود <Play className="w-4 h-4 fill-current rotate-180" />
+                تشغيل الشفرة{" "}
+                <Play className="w-4 h-4 fill-current rotate-180" />
               </>
             )}
           </button>
@@ -581,7 +582,7 @@ export default function AlifProPlatform() {
 
   const handleQuizSuccess = () => {
     const isAlreadyCompleted = userData.completedLessons.includes(
-      activeLesson.id
+      activeLesson.id,
     );
     if (!isAlreadyCompleted) {
       setUserData((prev: UserData) => ({
@@ -594,24 +595,11 @@ export default function AlifProPlatform() {
     window.scrollTo(0, 0);
   };
 
-  const globalCSS = `
-    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
-    body { font-family: 'Tajawal', system-ui, sans-serif; background-color: #f1f5f9; }
-    pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-    .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
-    .animate-fade-in-up { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .animate-bounce-in { animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.26, 1.55) forwards; }
-    
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes bounceIn { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.05); } 100% { transform: scale(1); } }
-  `;
-
   const DashboardView = () => {
     // Calculate total progress
     const totalLessons = CHAPTERS.reduce(
       (acc, ch) => acc + ch.lessons.length,
-      0
+      0,
     );
     const progressPerc =
       Math.round((userData.completedLessons.length / totalLessons) * 100) || 0;
@@ -651,7 +639,7 @@ export default function AlifProPlatform() {
           {CHAPTERS.map((chapter, idx) => {
             // Check chapter progress
             const chapterCompleted = chapter.lessons.filter((l) =>
-              userData.completedLessons.includes(l.id)
+              userData.completedLessons.includes(l.id),
             ).length;
             const isFullyCompleted =
               chapterCompleted === chapter.lessons.length;
@@ -659,7 +647,7 @@ export default function AlifProPlatform() {
             const isLocked =
               idx > 0 &&
               CHAPTERS[idx - 1].lessons.filter((l) =>
-                userData.completedLessons.includes(l.id)
+                userData.completedLessons.includes(l.id),
               ).length !== CHAPTERS[idx - 1].lessons.length;
             const ChapterIcon = chapter.icon;
 
@@ -678,8 +666,8 @@ export default function AlifProPlatform() {
                     isFullyCompleted
                       ? "bg-linear-to-br from-emerald-400 to-emerald-500 border-white text-white"
                       : isLocked
-                      ? "bg-slate-200 border-white text-slate-400"
-                      : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
+                        ? "bg-slate-200 border-white text-slate-400"
+                        : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
                   }`}
                 >
                   {isFullyCompleted ? (
@@ -732,8 +720,8 @@ export default function AlifProPlatform() {
           onClick={() => setView("dashboard")}
           className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors font-bold group"
         >
-          العودة للمسار{" "}
           <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
+          العودة للمسار{" "}
         </button>
 
         <div className="bg-white rounded-4xl p-8 shadow-sm border border-slate-200 mb-10 text-center">
@@ -758,7 +746,7 @@ export default function AlifProPlatform() {
               const isLocked =
                 idx > 0 &&
                 !userData.completedLessons.includes(
-                  activeChapter.lessons[idx - 1].id
+                  activeChapter.lessons[idx - 1].id,
                 );
               const LessonIcon = lesson.icon || PlayCircle;
 
@@ -783,8 +771,8 @@ export default function AlifProPlatform() {
                         isLocked
                           ? "border-slate-100"
                           : isCompleted
-                          ? "border-emerald-200 hover:border-emerald-400"
-                          : "border-indigo-200 hover:border-indigo-400"
+                            ? "border-emerald-200 hover:border-emerald-400"
+                            : "border-indigo-200 hover:border-indigo-400"
                       }`}
                     >
                       <div
@@ -792,8 +780,8 @@ export default function AlifProPlatform() {
                           isCompleted
                             ? "bg-emerald-100 text-emerald-600"
                             : isLocked
-                            ? "bg-slate-100 text-slate-400"
-                            : "bg-indigo-100 text-indigo-600"
+                              ? "bg-slate-100 text-slate-400"
+                              : "bg-indigo-100 text-indigo-600"
                         }`}
                       >
                         {isCompleted ? (
@@ -822,8 +810,8 @@ export default function AlifProPlatform() {
                         isCompleted
                           ? "bg-emerald-500"
                           : isLocked
-                          ? "bg-slate-300"
-                          : "bg-indigo-500 animate-pulse"
+                            ? "bg-slate-300"
+                            : "bg-indigo-500 animate-pulse"
                       }`}
                     ></div>
                   </div>
@@ -849,8 +837,8 @@ export default function AlifProPlatform() {
         onClick={() => setView("chapter")}
         className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors font-bold group"
       >
-        العودة للقسم{" "}
         <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
+        العودة للقسم{" "}
       </button>
 
       <div className="bg-white rounded-4xl p-8 md:p-12 shadow-sm border border-slate-200">
@@ -1055,7 +1043,6 @@ export default function AlifProPlatform() {
       dir="rtl"
       className="min-h-screen selection:bg-indigo-200 selection:text-indigo-900 pb-20"
     >
-      <style>{globalCSS}</style>
       <header className="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200 mb-8">
         <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
           <div
