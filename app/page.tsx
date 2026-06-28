@@ -344,7 +344,7 @@ const highlightAlif = (code: string) => {
     (match, p1, p2) => {
       tokens.push(`<span class="text-orange-300">${p2}</span>`);
       return `${p1}__TOKEN_${tokenIdx++}_END__`;
-    },
+    }
   );
 
   const keywords = [
@@ -376,7 +376,7 @@ const highlightAlif = (code: string) => {
   keywords.forEach((kw) => {
     const reg = new RegExp(
       `(^|\\s|\\(|\\)|\\[|\\]|:)(${kw})(?=\\s|\\(|\\)|\\[|\\]|:|$)`,
-      "g",
+      "g"
     );
     h = h.replace(reg, (match, p1, p2) => {
       tokens.push(`<span class="text-pink-400 font-bold">${p2}</span>`);
@@ -389,7 +389,7 @@ const highlightAlif = (code: string) => {
     (match) => {
       tokens.push(`<span class="text-cyan-400">${match}</span>`);
       return `__TOKEN_${tokenIdx++}_END__`;
-    },
+    }
   );
 
   for (let i = tokenIdx - 1; i >= 0; i--) {
@@ -582,7 +582,7 @@ export default function AlifProPlatform() {
 
   const handleQuizSuccess = () => {
     const isAlreadyCompleted = userData.completedLessons.includes(
-      activeLesson.id,
+      activeLesson.id
     );
     if (!isAlreadyCompleted) {
       setUserData((prev: UserData) => ({
@@ -599,7 +599,7 @@ export default function AlifProPlatform() {
     // Calculate total progress
     const totalLessons = CHAPTERS.reduce(
       (acc, ch) => acc + ch.lessons.length,
-      0,
+      0
     );
     const progressPerc =
       Math.round((userData.completedLessons.length / totalLessons) * 100) || 0;
@@ -639,7 +639,7 @@ export default function AlifProPlatform() {
           {CHAPTERS.map((chapter, idx) => {
             // Check chapter progress
             const chapterCompleted = chapter.lessons.filter((l) =>
-              userData.completedLessons.includes(l.id),
+              userData.completedLessons.includes(l.id)
             ).length;
             const isFullyCompleted =
               chapterCompleted === chapter.lessons.length;
@@ -647,7 +647,7 @@ export default function AlifProPlatform() {
             const isLocked =
               idx > 0 &&
               CHAPTERS[idx - 1].lessons.filter((l) =>
-                userData.completedLessons.includes(l.id),
+                userData.completedLessons.includes(l.id)
               ).length !== CHAPTERS[idx - 1].lessons.length;
             const ChapterIcon = chapter.icon;
 
@@ -666,8 +666,8 @@ export default function AlifProPlatform() {
                     isFullyCompleted
                       ? "bg-linear-to-br from-emerald-400 to-emerald-500 border-white text-white"
                       : isLocked
-                        ? "bg-slate-200 border-white text-slate-400"
-                        : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
+                      ? "bg-slate-200 border-white text-slate-400"
+                      : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
                   }`}
                 >
                   {isFullyCompleted ? (
@@ -746,7 +746,7 @@ export default function AlifProPlatform() {
               const isLocked =
                 idx > 0 &&
                 !userData.completedLessons.includes(
-                  activeChapter.lessons[idx - 1].id,
+                  activeChapter.lessons[idx - 1].id
                 );
               const LessonIcon = lesson.icon || PlayCircle;
 
@@ -771,8 +771,8 @@ export default function AlifProPlatform() {
                         isLocked
                           ? "border-slate-100"
                           : isCompleted
-                            ? "border-emerald-200 hover:border-emerald-400"
-                            : "border-indigo-200 hover:border-indigo-400"
+                          ? "border-emerald-200 hover:border-emerald-400"
+                          : "border-indigo-200 hover:border-indigo-400"
                       }`}
                     >
                       <div
@@ -780,8 +780,8 @@ export default function AlifProPlatform() {
                           isCompleted
                             ? "bg-emerald-100 text-emerald-600"
                             : isLocked
-                              ? "bg-slate-100 text-slate-400"
-                              : "bg-indigo-100 text-indigo-600"
+                            ? "bg-slate-100 text-slate-400"
+                            : "bg-indigo-100 text-indigo-600"
                         }`}
                       >
                         {isCompleted ? (
@@ -810,8 +810,8 @@ export default function AlifProPlatform() {
                         isCompleted
                           ? "bg-emerald-500"
                           : isLocked
-                            ? "bg-slate-300"
-                            : "bg-indigo-500 animate-pulse"
+                          ? "bg-slate-300"
+                          : "bg-indigo-500 animate-pulse"
                       }`}
                     ></div>
                   </div>
@@ -919,11 +919,14 @@ export default function AlifProPlatform() {
               let stateClass =
                 "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700";
               if (isSubmitted) {
-                if (idx === quiz.correctAnswer)
+                // Only highlight correct answer if the user selected it correctly
+                if (idx === quiz.correctAnswer && idx === selectedOpt)
                   stateClass =
                     "bg-emerald-50 border-emerald-500 text-emerald-800 ring-4 ring-emerald-500/20";
+                // Highlight wrong selection in red
                 else if (idx === selectedOpt)
                   stateClass = "bg-rose-50 border-rose-500 text-rose-800";
+                // Dim all other options when wrong answer chosen
                 else
                   stateClass =
                     "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
@@ -942,9 +945,11 @@ export default function AlifProPlatform() {
                   <span dir="ltr" className="text-right w-full font-mono">
                     {opt}
                   </span>
-                  {isSubmitted && idx === quiz.correctAnswer && (
-                    <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0 ml-4 animate-bounce-in" />
-                  )}
+                  {isSubmitted &&
+                    idx === quiz.correctAnswer &&
+                    selectedOpt === quiz.correctAnswer && (
+                      <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0 ml-4 animate-bounce-in" />
+                    )}
                   {isSubmitted &&
                     idx === selectedOpt &&
                     idx !== quiz.correctAnswer && (
