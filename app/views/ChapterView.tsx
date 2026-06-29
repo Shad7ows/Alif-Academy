@@ -1,0 +1,166 @@
+"use cliean";
+
+import type { LucideProps } from "lucide-react";
+import { CheckCircle, ArrowLeft, PlayCircle, Lock } from "lucide-react";
+
+interface Quiz {
+  question: string;
+  code: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+interface Lesson {
+  id: string;
+  title: string;
+  icon: React.FC<LucideProps>;
+  content: string;
+  code: string;
+  expectedOutput: string;
+  quiz: Quiz;
+}
+
+interface Chapter {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.FC<LucideProps>;
+  color: string;
+  bgLight: string;
+  textDark: string;
+  lessons: Lesson[];
+}
+
+interface ChapterViewProps {
+  activeChapterIndex: number;
+  userData: { completedLessons: string[]; xp: number };
+  CHAPTERS: Chapter[];
+  startLesson: (index: number) => void;
+  setView: (view: string) => void;
+}
+
+export const ChapterView = ({
+  activeChapterIndex,
+  userData,
+  CHAPTERS,
+  startLesson,
+  setView,
+}: ChapterViewProps) => {
+  const activeChapter = CHAPTERS[activeChapterIndex];
+
+  return (
+    <div className="max-w-3xl mx-auto animate-fade-in-up pb-20">
+      <button
+        onClick={() => setView("dashboard")}
+        className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors font-bold group"
+      >
+        <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
+        العودة للمسار{" "}
+      </button>
+
+      <div className="bg-white rounded-4xl p-8 shadow-sm border border-slate-200 mb-10 text-center">
+        <div
+          className={`w-20 h-20 mx-auto rounded-3xl mb-4 flex items-center justify-center bg-linear-to-br ${activeChapter.color} text-white shadow-lg`}
+        >
+          <activeChapter.icon className="w-10 h-10" />
+        </div>
+        <h1 className="text-3xl font-black text-slate-800 mb-2">
+          {activeChapter.title}
+        </h1>
+        <p className="text-slate-500 text-lg">{activeChapter.description}</p>
+      </div>
+
+      <div className="relative pl-4 md:pl-0">
+        {/* Timeline Line */}
+        <div className="absolute right-10 md:right-1/2 top-4 bottom-4 w-1 bg-slate-200 rounded-full transform md:translate-x-1/2"></div>
+
+        <div className="space-y-12">
+          {activeChapter.lessons.map((lesson: Lesson, idx: number) => {
+            const isCompleted = userData.completedLessons.includes(lesson.id);
+            const isLocked =
+              idx > 0 &&
+              !userData.completedLessons.includes(
+                activeChapter.lessons[idx - 1].id
+              );
+            const LessonIcon = lesson.icon || PlayCircle;
+
+            return (
+              <div
+                key={lesson.id}
+                className="relative flex flex-col md:flex-row items-center justify-between group"
+              >
+                {/* Lesson Card */}
+                <div
+                  className={`w-full md:w-5/12 ${
+                    idx % 2 !== 0 ? "md:order-3" : "md:order-1"
+                  } ${
+                    isLocked
+                      ? "opacity-50"
+                      : "cursor-pointer hover:-translate-y-1"
+                  } transition-all`}
+                  onClick={() => !isLocked && startLesson(idx)}
+                >
+                  <div
+                    className={`bg-white p-5 rounded-2xl border-2 shadow-sm flex items-center gap-4 ${
+                      isLocked
+                        ? "border-slate-100"
+                        : isCompleted
+                        ? "border-emerald-200 hover:border-emerald-400"
+                        : "border-indigo-200 hover:border-indigo-400"
+                    }`}
+                  >
+                    <div
+                      className={`p-3 rounded-xl ${
+                        isCompleted
+                          ? "bg-emerald-100 text-emerald-600"
+                          : isLocked
+                          ? "bg-slate-100 text-slate-400"
+                          : "bg-indigo-100 text-indigo-600"
+                      }`}
+                    >
+                      {isCompleted ? (
+                        <CheckCircle className="w-6 h-6" />
+                      ) : isLocked ? (
+                        <Lock className="w-6 h-6" />
+                      ) : (
+                        <LessonIcon className="w-6 h-6" />
+                      )}
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-slate-400">
+                        الدرس {idx + 1}
+                      </span>
+                      <h4 className="text-lg font-bold text-slate-800 leading-tight">
+                        {lesson.title}
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Center Dot */}
+                <div className="absolute right-6 md:right-1/2 w-8 h-8 rounded-full border-4 border-white bg-slate-200 shadow-md transform md:translate-x-1/2 order-2 z-10 flex items-center justify-center">
+                  <div
+                    className={`w-3 h-3 rounded-full ${
+                      isCompleted
+                        ? "bg-emerald-500"
+                        : isLocked
+                        ? "bg-slate-300"
+                        : "bg-indigo-500 animate-pulse"
+                    }`}
+                  ></div>
+                </div>
+
+                {/* Empty spacer for alternating layout */}
+                <div
+                  className={`hidden md:block w-5/12 ${
+                    idx % 2 !== 0 ? "order-1" : "order-3"
+                  }`}
+                ></div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
