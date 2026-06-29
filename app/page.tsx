@@ -23,14 +23,14 @@ export default function AlifProPlatform() {
   });
 
   // Load from localStorage AFTER hydration
-  useState(() => {
+  useEffect(() => {
     try {
       const saved = localStorage.getItem("alifProV3Data");
       if (saved) setUserData(JSON.parse(saved));
     } catch (e) {
       console.error("Error loading save data", e);
     }
-  });
+  }, []);
 
   // Save user data
   useEffect(() => {
