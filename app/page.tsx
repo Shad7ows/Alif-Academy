@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { DashboardView } from "./views/DashboardView";
 import { CHAPTERS } from "./chapters";
 import { AlifIDE } from "./components/AlifIDE";
 import {
@@ -112,124 +113,6 @@ export default function AlifProPlatform() {
     }
     setView("chapter"); // Return to chapter timeline
     window.scrollTo(0, 0);
-  };
-
-  const DashboardView = () => {
-    // Calculate total progress
-    const totalLessons = CHAPTERS.reduce(
-      (acc, ch) => acc + ch.lessons.length,
-      0
-    );
-    const progressPerc =
-      Math.round((userData.completedLessons.length / totalLessons) * 100) || 0;
-
-    return (
-      <div className="max-w-4xl mx-auto animate-fade-in pb-20">
-        <div className="bg-white rounded-3xl p-8 mb-10 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
-          <div className="absolute -right-20 -top-20 w-64 h-64 bg-linear-to-br from-indigo-50 to-purple-50 rounded-full blur-3xl opacity-70 group-hover:opacity-100 transition-opacity"></div>
-          <div className="relative z-10 text-center md:text-right">
-            <h2 className="text-3xl font-black text-slate-800 mb-2">
-              تابع رحلتك البرمجية 🚀
-            </h2>
-            <div className="w-full bg-slate-100 h-3 rounded-full mt-4 overflow-hidden">
-              <div
-                className="bg-indigo-500 h-full rounded-full transition-all duration-1000"
-                style={{ width: `${progressPerc}%` }}
-              ></div>
-            </div>
-            <p className="text-slate-500 text-sm font-bold mt-2">
-              أكملت {progressPerc}% من المنهج
-            </p>
-          </div>
-          <div className="relative z-10 flex gap-4">
-            <div className="bg-amber-50 border border-amber-200 px-6 py-4 rounded-2xl flex flex-col items-center min-w-30">
-              <Star className="text-amber-500 w-8 h-8 mb-1 fill-amber-500" />
-              <span className="text-2xl font-black text-amber-600">
-                {userData.xp}
-              </span>
-              <span className="text-amber-700/70 text-sm font-bold">
-                نقطة (XP)
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          {CHAPTERS.map((chapter, idx) => {
-            // Check chapter progress
-            const chapterCompleted = chapter.lessons.filter((l) =>
-              userData.completedLessons.includes(l.id)
-            ).length;
-            const isFullyCompleted =
-              chapterCompleted === chapter.lessons.length;
-            // Lock logic: first chapter is unlocked. Next chapters unlock if previous is fully completed.
-            const isLocked =
-              idx > 0 &&
-              CHAPTERS[idx - 1].lessons.filter((l) =>
-                userData.completedLessons.includes(l.id)
-              ).length !== CHAPTERS[idx - 1].lessons.length;
-            const ChapterIcon = chapter.icon;
-
-            return (
-              <div
-                key={chapter.id}
-                className={`flex flex-col md:flex-row gap-6 items-center md:items-stretch group ${
-                  isLocked
-                    ? "opacity-60 grayscale cursor-not-allowed"
-                    : "cursor-pointer hover:-translate-y-1"
-                } transition-all duration-300`}
-                onClick={() => !isLocked && openChapter(idx)}
-              >
-                <div
-                  className={`w-24 h-24 rounded-3xl shrink-0 flex items-center justify-center shadow-lg border-4 z-10 transition-transform ${
-                    isFullyCompleted
-                      ? "bg-linear-to-br from-emerald-400 to-emerald-500 border-white text-white"
-                      : isLocked
-                      ? "bg-slate-200 border-white text-slate-400"
-                      : `bg-linear-to-br ${chapter.color} border-white text-white scale-110 shadow-xl`
-                  }`}
-                >
-                  {isFullyCompleted ? (
-                    <Check className="w-10 h-10 stroke-3" />
-                  ) : isLocked ? (
-                    <Lock className="w-10 h-10" />
-                  ) : (
-                    <ChapterIcon className="w-10 h-10" />
-                  )}
-                </div>
-                <div
-                  className={`flex-1 bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 w-full ${
-                    !isLocked &&
-                    "group-hover:border-indigo-300 group-hover:shadow-md"
-                  } transition-all`}
-                >
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-sm font-bold text-slate-400 mb-2 block uppercase tracking-wider">
-                      القسم {idx + 1}
-                    </span>
-                    <span
-                      className={`text-xs font-bold px-3 py-1 rounded-full ${
-                        isFullyCompleted
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-slate-100 text-slate-500"
-                      }`}
-                    >
-                      {chapterCompleted} / {chapter.lessons.length} دروس
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-800 mb-2">
-                    {chapter.title}
-                  </h3>
-                  <p className="text-slate-500 text-lg leading-relaxed">
-                    {chapter.description}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
   };
 
   const ChapterView = () => {
@@ -595,7 +478,9 @@ export default function AlifProPlatform() {
         </div>
       </header>
       <main className="px-6">
-        {view === "dashboard" && <DashboardView />}
+        {view === "dashboard" && (
+          <DashboardView userData={userData} openChapter={openChapter} />
+        )}
         {view === "chapter" && <ChapterView />}
         {view === "lesson" && <LessonView />}
         {view === "quiz" && <QuizView />}
