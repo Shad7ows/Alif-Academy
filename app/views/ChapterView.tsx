@@ -1,5 +1,3 @@
-"use cliean";
-
 import type { LucideProps } from "lucide-react";
 import { CheckCircle, ArrowLeft, PlayCircle, Lock } from "lucide-react";
 

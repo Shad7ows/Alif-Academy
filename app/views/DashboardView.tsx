@@ -1,5 +1,3 @@
-"use client";
-
 import { CHAPTERS } from "../chapters";
 import { Star, Check, Lock } from "lucide-react";
 
