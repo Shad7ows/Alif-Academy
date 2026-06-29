@@ -441,7 +441,9 @@ const IDEBlock = ({
       <div className="flex p-4 text-sm md:text-base overflow-x-auto">
         <div className="flex flex-col text-slate-600 pl-4 select-none border-l border-slate-700/50 ml-4 text-left">
           {lines.map((_, i) => (
-            <span key={i}>{i + 1}</span>
+            <span key={i} className="leading-relaxed">
+              {i + 1}
+            </span>
           ))}
         </div>
         <pre className="text-slate-100 flex-1 leading-relaxed">
