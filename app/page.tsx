@@ -41,7 +41,7 @@ export default function AlifProPlatform() {
 
   const handleQuizSuccess = useCallback(
     (lessonId: string) => {
-      // ✅ إرسال التقدم للسيرفر عبر completeLesson
+      // إرسال التقدم للسيرفر عبر completeLesson
       completeLesson(lessonId, 25);
       setView("chapter"); // Return to chapter timeline
       window.scrollTo(0, 0);
@@ -49,7 +49,7 @@ export default function AlifProPlatform() {
     [completeLesson]
   );
 
-  // ✅ عرض حالة التحميل
+  // عرض حالة التحميل
   if (authLoading || progressLoading) {
     return (
       <div
@@ -64,7 +64,7 @@ export default function AlifProPlatform() {
     );
   }
 
-  // ✅ عرض خطأ إذا وجد
+  // عرض خطأ إذا وجد
   if (progressError) {
     return (
       <div
