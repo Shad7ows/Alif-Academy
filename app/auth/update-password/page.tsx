@@ -33,7 +33,7 @@ function UpdatePasswordContent() {
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // ✅ Check session on mount (async, no sync setState in effect body)
+  // Check session on mount (async, no sync setState in effect body)
   useEffect(() => {
     let cancelled = false;
 
@@ -57,7 +57,7 @@ function UpdatePasswordContent() {
     };
   }, [supabase, router]);
 
-  // ✅ Handle password update
+  // Handle password update
   const handleUpdatePassword = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
