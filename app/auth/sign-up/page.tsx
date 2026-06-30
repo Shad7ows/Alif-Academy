@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { z } from "zod";
-import { Mail, Lock, Eye, EyeOff, User, Link } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
+import Link from "next/link";
 
 const signUpSchema = z.object({
   fullName: z.string().min(2, "الاسم الكامل يجب أن يكون حرفين على الأقل"),

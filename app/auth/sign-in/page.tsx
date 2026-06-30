@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { z } from "zod";
-import { Mail, Lock, Eye, EyeOff, Link } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { GoogleIcon, GitHubIcon } from "@/components/Auth/Icons";
+import Link from "next/link";
 
 const signInSchema = z.object({
   email: z.email("البريد الإلكتروني غير صالح"),
