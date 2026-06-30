@@ -201,7 +201,7 @@ export function useUserProgress(userId: string | null) {
       try {
         const { error } = await supabase
           .from("user_progress")
-          .upsert(entries, { onConflict: "user_id,lesson_id" }); // ✅ cast as any
+          .upsert(entries, { onConflict: "user_id,lesson_id" });
 
         if (error) throw error;
 
