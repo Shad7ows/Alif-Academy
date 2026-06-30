@@ -122,3 +122,15 @@ CREATE TRIGGER on_auth_user_created
 CREATE INDEX idx_user_progress_user_id ON user_progress(user_id);
 CREATE INDEX idx_activity_log_user_id ON activity_log(user_id);
 CREATE INDEX idx_user_progress_lesson_id ON user_progress(lesson_id);
+
+-- =============================================
+-- 9. أذونات الجداول (GRANT Statements)
+-- =============================================
+-- هذه الأذونات ضرورية لأن RLS Policies لا تعمل بدون GRANT أساسي
+
+-- أذونات الدور المصادق عليه (authenticated)
+GRANT USAGE ON SCHEMA public TO authenticated;
+GRANT SELECT, INSERT, UPDATE ON ALL TABLES IN SCHEMA public TO authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO authenticated;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO authenticated;
+GRANT EXECUTE ON ALL PROCEDURES IN SCHEMA public TO authenticated;
