@@ -10,6 +10,7 @@ import {
   User,
   Mail,
   TerminalSquare,
+  Settings,
 } from "lucide-react";
 import Image from "next/image";
 import KoFiCOIN from "@/assets/icons/Ko-fi_COIN.gif";
@@ -193,6 +194,14 @@ export function SideMenu({
               <User className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
             </div>
             <span>الملف الشخصي</span>
+          </button>
+
+          {/* زر الإعدادات */}
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
+              <Settings className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            </div>
+            <span>الإعدادات</span>
           </button>
         </div>
 
