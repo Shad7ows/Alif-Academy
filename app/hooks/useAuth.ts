@@ -93,29 +93,68 @@ export function useAuth() {
     [supabase]
   );
 
+  // ── Helper: Check email via Edge Function ─────────────────────────────
+  const checkEmailExists = useCallback(async (email: string): Promise<boolean> => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/check-email`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
+      
+      if (!response.ok) return false;
+      
+      const { exists } = await response.json();
+      return exists;
+    } catch {
+      return false; // Fail-safe: افترض أنه غير موجود
+    }
+  }, []);
+
+  // ── Sign Up with Pre-check ─────────────────────────────────────────────
   const signUpWithEmail = useCallback(
     async (fullName: string, email: string, password: string) => {
       setError(null);
       setLoading(true);
+
       try {
-        const { error } = await supabase.auth.signUp({
+        // الخطوة 1: التحقق من وجود البريد
+        const exists = await checkEmailExists(email);
+        
+        if (exists) {
+          throw new Error(
+            "هذا البريد الإلكتروني مسجل مسبقاً. يرجى تسجيل الدخول أو استعادة كلمة المرور."
+          );
+        }
+
+        // الخطوة 2: إنشاء الحساب
+        const { error: signUpError } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            data: {
-              full_name: fullName,
-            },
+            data: { full_name: fullName },
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         });
-        if (error) throw error;
+
+        if (signUpError) throw signUpError;
+
+        return {
+          success: true,
+          message: "تم إرسال بريد التأكيد. يرجى التحقق من بريدك الإلكتروني.",
+        };
+
       } catch (e: unknown) {
-        setError(e instanceof Error ? e.message : "Unknown error");
-        throw e;
+        const message = e instanceof Error ? e : "فشل إنشاء الحساب";
+        throw message;
       } finally {
         setLoading(false);
       }
     },
-    [supabase]
+    [supabase, checkEmailExists]
   );
 
   const signOut = useCallback(async () => {
