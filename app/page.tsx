@@ -113,13 +113,18 @@ export default function AlifProPlatform() {
         xp={userData.xp}
         completedLessons={userData.completedLessons.length}
       />
-
-      <header className="bg-white/40 backdrop-blur-md sticky top-0 z-30 border-b border-slate-200 mb-8">
-        <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
+      <header className="sticky bg-white/40 backdrop-blur-md top-0 z-30 border-b border-slate-200 mb-8">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div
             className="flex items-center gap-3 cursor-pointer"
             onClick={() => setView("dashboard")}
           >
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="hidden md:flex p-2 ml-4 hover:bg-slate-100 rounded-lg transition-colors"
+            >
+              <Menu className="w-6 h-6 text-slate-700" />
+            </button>
             <div className="bg-slate-900 text-white p-2.5 rounded-xl shadow-md transform -rotate-6">
               <TerminalSquare className="w-7 h-7" />
             </div>
@@ -140,8 +145,8 @@ export default function AlifProPlatform() {
             <Menu className="w-6 h-6 text-slate-700" />
           </button>
 
-          {/* Desktop Stats + Menu */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Desktop Stats*/}
+          <div className="hidden md:flex items-center gap-4 px-16">
             <div className="flex items-center gap-4 bg-slate-50 px-4 py-2 rounded-full border border-slate-200 font-bold text-slate-700 text-sm">
               <div className="flex items-center gap-1.5 text-orange-600">
                 <Star className="w-4 h-4 fill-orange-500" /> {userData.xp}
@@ -152,12 +157,6 @@ export default function AlifProPlatform() {
                 {userData.completedLessons.length} دروس مكتملة
               </div>
             </div>
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-            >
-              <Menu className="w-6 h-6 text-slate-700" />
-            </button>
           </div>
         </div>
       </header>
