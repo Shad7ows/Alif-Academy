@@ -11,6 +11,10 @@ import {
   Mail,
   TerminalSquare,
   Settings,
+  Medal,
+  BarChart3,
+  HelpCircle,
+  Info,
 } from "lucide-react";
 import Image from "next/image";
 import KoFiCOIN from "@/assets/icons/Ko-fi_COIN.gif";
@@ -187,7 +191,7 @@ export function SideMenu({
         </div>
 
         {/* Menu Items */}
-        <div className="px-6 pt-6 space-y-2">
+        <div className="px-6 pt-12 space-y-3">
           {/* الملف الشخصي Button */}
           <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
             <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
@@ -202,6 +206,38 @@ export function SideMenu({
               <Settings className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
             </div>
             <span>الإعدادات</span>
+          </button>
+
+          {/* زر الإنجازات/الشهادات */}
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
+              <Medal className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            </div>
+            <span>الإنجازات</span>
+          </button>
+
+          {/* زر الإحصائيات */}
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
+              <BarChart3 className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            </div>
+            <span>الإحصائيات</span>
+          </button>
+
+          {/* زر المساعدة/الدعم */}
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
+              <HelpCircle className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            </div>
+            <span>المساعدة</span>
+          </button>
+
+          {/* زر حول التطبيق */}
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
+              <Info className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            </div>
+            <span>حول التطبيق</span>
           </button>
         </div>
 
