@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import {
   X,
@@ -27,7 +27,7 @@ export function SideMenu({
   xp = 0,
   completedLessons = 0,
 }: SideMenuProps) {
-  const { user, loading, error, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
 
   // Close on Escape key
   useEffect(() => {
