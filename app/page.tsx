@@ -123,12 +123,12 @@ export default function AlifProPlatform() {
             <div className="bg-slate-900 text-white p-2.5 rounded-xl shadow-md transform -rotate-6">
               <TerminalSquare className="w-7 h-7" />
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <h1 className="text-3xl font-black tracking-tight text-slate-800">
                 مدرسة<span className="text-indigo-600"> ألف </span>
               </h1>
               <p className="text-indigo-600 text-xs font-medium pr-1">
-                إبدأ رحلة تعلم البرمجة بالعربية مع النسخة 5.3 من لغة ألف
+                إبدأ رحلة تعلم البرمجة بالعربية مع ألف نـ5
               </p>
             </div>
           </div>
