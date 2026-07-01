@@ -55,7 +55,23 @@ export default function SignInPage() {
     try {
       await signInWithEmail(email, password);
     } catch (e: unknown) {
-      const errorMessage = e instanceof Error ? e.message : "فشل تسجيل الدخول";
+      // Check error code (stable) and status code as fallback
+      const err = e as Error & { code?: string; status?: number };
+      let errorMessage = "فشل تسجيل الدخول";
+      if (err != null) {
+        // Check Supabase error code (stable across Supabase updates)
+        if (err.code === "email_not_confirmed") {
+          errorMessage = "لم يتم التحقق من البريد الإلكتروني";
+        }
+        // Fallback: check HTTP status 403 (Supabase uses it for unconfirmed emails)
+        else if (err.status === 403) {
+          errorMessage = "لم يتم التحقق من البريد الإلكتروني";
+        }
+        // If it's an Error object, use its message as fallback
+        else if (e instanceof Error && e.message) {
+          errorMessage = e.message;
+        }
+      }
       setFormError(errorMessage);
     }
     setSubmitting(false);

@@ -17,6 +17,7 @@ CREATE TABLE profiles (
   email TEXT,
   full_name TEXT,
   avatar_url TEXT,
+  age INTEGER,
   xp INTEGER DEFAULT 0,
   streak INTEGER DEFAULT 0,
   last_active_date TIMESTAMP WITH TIME ZONE,
@@ -101,12 +102,13 @@ CREATE POLICY "Users can insert own activity"
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-  INSERT INTO public.profiles (id, email, full_name, avatar_url)
+  INSERT INTO public.profiles (id, email, full_name, avatar_url, age)
   VALUES (
     NEW.id,
     NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'full_name', ''),
-    COALESCE(NEW.raw_user_meta_data->>'avatar_url', '')
+    COALESCE(NEW.raw_user_meta_data->>'avatar_url', ''),
+    COALESCE(NEW.raw_user_meta_data->>'age', NULL)::INTEGER
   );
   RETURN NEW;
 END;

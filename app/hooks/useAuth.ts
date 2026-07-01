@@ -84,7 +84,6 @@ export function useAuth() {
         });
         if (error) throw error;
       } catch (e: unknown) {
-        setError(e instanceof Error ? e.message : "Unknown error");
         throw e;
       } finally {
         setLoading(false);
@@ -116,7 +115,7 @@ export function useAuth() {
 
   // ── Sign Up with Pre-check ─────────────────────────────────────────────
   const signUpWithEmail = useCallback(
-    async (fullName: string, email: string, password: string) => {
+    async (fullName: string, age: number | "", email: string, password: string) => {
       setError(null);
       setLoading(true);
 
@@ -135,7 +134,10 @@ export function useAuth() {
           email,
           password,
           options: {
-            data: { full_name: fullName },
+            data: { 
+              full_name: fullName,
+              age: age !== "" ? age : null,
+            },
             emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         });

@@ -3,18 +3,23 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { z } from "zod";
-import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, User, Calendar } from "lucide-react";
 import Link from "next/link";
 
 const signUpSchema = z.object({
   fullName: z.string().min(2, "الاسم الكامل يجب أن يكون حرفين على الأقل"),
-  email: z.string().email("البريد الإلكتروني غير صالح"),
+  age: z.coerce
+    .number()
+    .min(5, "العمر يجب أن يكون 5 سنوات على الأقل")
+    .max(120, "العمر يجب أن يكون 120 سنة على الأكثر"),
+  email: z.email("البريد الإلكتروني غير صالح"),
   password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
 });
 
 export default function SignUpPage() {
   const { user, loading, error, signUpWithEmail } = useAuth();
   const [fullName, setFullName] = useState("");
+  const [age, setAge] = useState<number | "">("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +44,7 @@ export default function SignUpPage() {
     e.preventDefault();
     setFormError("");
 
-    const result = signUpSchema.safeParse({ fullName, email, password });
+    const result = signUpSchema.safeParse({ fullName, age, email, password });
     if (!result.success) {
       setFormError(result.error.issues[0].message);
       return;
@@ -47,7 +52,7 @@ export default function SignUpPage() {
 
     setSubmitting(true);
     try {
-      await signUpWithEmail(fullName, email, password);
+      await signUpWithEmail(fullName, age, email, password);
       setSent(true);
     } catch (e: unknown) {
       const errorMessage = e instanceof Error ? e.message : "فشل إنشاء الحساب";
@@ -121,6 +126,26 @@ export default function SignUpPage() {
                 placeholder="طارق أحمد"
               />
               <User className="w-5 h-5 text-slate-400 absolute right-3 top-3.5" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">
+              العمر
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                value={age}
+                onChange={(e) =>
+                  setAge(e.target.value === "" ? "" : Number(e.target.value))
+                }
+                min={5}
+                max={120}
+                className="w-full px-4 py-3 pr-10 border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                placeholder="25"
+              />
+              <Calendar className="w-5 h-5 text-slate-400 absolute right-3 top-3.5" />
             </div>
           </div>
 
