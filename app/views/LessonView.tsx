@@ -36,7 +36,7 @@ const formatContent = (text: string) => {
   return parts.map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**")) {
       return (
-        <strong key={i} className="text-slate-800 font-bold">
+        <strong key={i} className="text-slate-800 dark:text-white font-bold">
           {part.slice(2, -2)}
         </strong>
       );
@@ -45,7 +45,7 @@ const formatContent = (text: string) => {
       return (
         <code
           key={i}
-          className="bg-slate-100 text-indigo-600 px-1.5 py-0.5 mx-1 rounded font-mono text-sm md:text-base border border-slate-200"
+          className="bg-slate-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 mx-1 rounded font-mono text-sm md:text-base border border-slate-200 dark:border-slate-600"
         >
           {part.slice(1, -1)}
         </code>
@@ -77,13 +77,13 @@ export const LessonView = ({
   <div className="max-w-3xl mx-auto animate-fade-in-up pb-20">
     <button
       onClick={() => setView("chapter")}
-      className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors font-bold group"
+      className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors font-bold group dark:text-slate-400"
     >
       <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
       العودة للقسم{" "}
     </button>
 
-    <div className="bg-white rounded-4xl p-8 md:p-12 shadow-sm border border-slate-200">
+    <div className="bg-white dark:bg-slate-800 rounded-4xl p-8 md:p-12 shadow-sm border border-slate-200 dark:border-slate-700">
       <div className="flex items-center gap-4 mb-10">
         <div
           className={`w-16 h-16 rounded-2xl flex items-center justify-center bg-linear-to-br ${activeChapter.color} text-white shadow-lg`}
@@ -95,16 +95,16 @@ export const LessonView = ({
           )}
         </div>
         <div>
-          <span className="text-slate-400 font-bold text-sm tracking-wider">
+          <span className="text-slate-400 dark:text-slate-500 font-bold text-sm tracking-wider">
             الدرس {activeLessonIndex + 1}
           </span>
-          <h1 className="text-3xl md:text-4xl font-black text-slate-800 mt-1">
+          <h1 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-white mt-1">
             {activeLesson.title}
           </h1>
         </div>
       </div>
 
-      <div className="text-slate-600 text-xl leading-[1.8] mb-10 font-medium">
+      <div className="text-slate-600 dark:text-slate-300 text-xl leading-[1.8] mb-10 font-medium">
         {formatContent(activeLesson.content)}
       </div>
 
@@ -118,7 +118,7 @@ export const LessonView = ({
 
       <button
         onClick={onComplete}
-        className="w-full bg-slate-900 hover:bg-black text-white p-5 rounded-2xl text-xl font-bold transition-all shadow-xl shadow-slate-900/20 flex items-center justify-center gap-3 hover:-translate-y-1"
+        className="w-full bg-slate-900 dark:bg-slate-950 hover:bg-black dark:hover:bg-slate-800 text-white p-5 rounded-2xl text-xl font-bold transition-all shadow-xl shadow-slate-900/20 dark:shadow-slate-950/40 flex items-center justify-center gap-3 hover:-translate-y-1"
       >
         استمرار إلى التحدي <ChevronRight className="w-6 h-6 rotate-180" />
       </button>

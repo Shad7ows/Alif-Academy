@@ -89,14 +89,14 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="mb-6 flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors font-medium"
+        className="mb-6 flex items-center gap-2 text-slate-600 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors font-medium dark:text-slate-400"
       >
         <span>→</span>
         <span>العودة للرئيسية</span>
       </button>
 
       {/* Header */}
-      <div className="bg-indigo-500 rounded-3xl p-8 mb-8 text-white shadow-xl">
+      <div className="bg-indigo-500 dark:bg-indigo-600 rounded-3xl p-8 mb-8 text-white shadow-xl">
         <div className="flex items-center gap-4 mb-6">
           <div className="p-3 bg-white/20 backdrop-blur-sm rounded-2xl">
             <BarChart3 className="w-8 h-8" />
@@ -133,23 +133,23 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
       </div>
 
       {/* Progress Overview */}
-      <div className="bg-white rounded-3xl p-6 mb-8 shadow-sm border border-slate-200">
-        <h3 className="text-xl font-black text-slate-800 mb-4 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-indigo-600" />
+      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 mb-8 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-xl font-black text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+          <TrendingUp className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           نظرة عامة على التقدم
         </h3>
 
         {/* Main Progress Bar */}
         <div className="mb-6">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-bold text-slate-600">
+            <span className="text-sm font-bold text-slate-600 dark:text-slate-300">
               التقدم الكلي
             </span>
-            <span className="text-sm font-black text-indigo-600">
+            <span className="text-sm font-black text-indigo-600 dark:text-indigo-400">
               {stats.progressPercentage}%
             </span>
           </div>
-          <div className="w-full bg-slate-100 h-4 rounded-full overflow-hidden">
+          <div className="w-full bg-slate-100 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
             <div
               className="bg-linear-to-l from-indigo-500 to-purple-500 h-full rounded-full transition-all duration-1000"
               style={{ width: `${stats.progressPercentage}%` }}
@@ -159,34 +159,40 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-emerald-50 rounded-2xl">
-            <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-emerald-600" />
-            <p className="text-xl font-black text-emerald-700">
+          <div className="text-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl">
+            <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-emerald-600 dark:text-emerald-400" />
+            <p className="text-xl font-black text-emerald-700 dark:text-emerald-300">
               {stats.completedLessons}
             </p>
-            <p className="text-emerald-600/70 text-xs">مكتمل</p>
+            <p className="text-emerald-600/70 dark:text-emerald-400/70 text-xs">
+              مكتمل
+            </p>
           </div>
-          <div className="text-center p-4 bg-amber-50 rounded-2xl">
-            <Circle className="w-8 h-8 mx-auto mb-2 text-amber-600" />
-            <p className="text-xl font-black text-amber-700">
+          <div className="text-center p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl">
+            <Circle className="w-8 h-8 mx-auto mb-2 text-amber-600 dark:text-amber-400" />
+            <p className="text-xl font-black text-amber-700 dark:text-amber-300">
               {stats.remainingLessons}
             </p>
-            <p className="text-amber-600/70 text-xs">متبقي</p>
+            <p className="text-amber-600/70 dark:text-amber-400/70 text-xs">
+              متبقي
+            </p>
           </div>
-          <div className="text-center p-4 bg-slate-50 rounded-2xl">
-            <Target className="w-8 h-8 mx-auto mb-2 text-slate-600" />
-            <p className="text-xl font-black text-slate-700">
+          <div className="text-center p-4 bg-slate-50 dark:bg-slate-700 rounded-2xl">
+            <Target className="w-8 h-8 mx-auto mb-2 text-slate-600 dark:text-slate-300" />
+            <p className="text-xl font-black text-slate-700 dark:text-slate-200">
               {stats.totalLessons}
             </p>
-            <p className="text-slate-600/70 text-xs">الإجمالي</p>
+            <p className="text-slate-600/70 dark:text-slate-400/70 text-xs">
+              الإجمالي
+            </p>
           </div>
         </div>
       </div>
 
       {/* Chapter Statistics */}
-      <div className="bg-white rounded-3xl p-6 mb-8 shadow-sm border border-slate-200">
-        <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
-          <BarChart3 className="w-6 h-6 text-indigo-600" />
+      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 mb-8 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-xl font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+          <BarChart3 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           إحصائيات الأقسام
         </h3>
 
@@ -197,22 +203,26 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
               <div key={chapter.id} className="group">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-3">
-                    <div className={`p-2 ${chapter.bgLight} rounded-xl`}>
-                      <ChapterIcon className={`w-5 h-5 ${chapter.textDark}`} />
+                    <div
+                      className={`p-2 ${chapter.bgLight} dark:bg-slate-700 rounded-xl`}
+                    >
+                      <ChapterIcon
+                        className={`w-5 h-5 ${chapter.textDark} dark:text-slate-300`}
+                      />
                     </div>
-                    <span className="font-bold text-slate-700">
+                    <span className="font-bold text-slate-700 dark:text-slate-200">
                       {chapter.title}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-slate-500">
+                    <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
                       {chapter.completed}/{chapter.total} دروس
                     </span>
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-bold ${
                         chapter.percentage === 100
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300"
+                          : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
                       }`}
                     >
                       {chapter.percentage}%
@@ -221,7 +231,7 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
                 </div>
 
                 {/* Chapter Progress Bar */}
-                <div className="w-full bg-slate-100 h-3 rounded-full overflow-hidden mr-12">
+                <div className="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden mr-12">
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ${
                       chapter.percentage === 100
@@ -238,16 +248,16 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
       </div>
 
       {/* Lesson Details */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
-        <h3 className="text-xl font-black text-slate-800 mb-6 flex items-center gap-2">
-          <CheckCircle2 className="w-6 h-6 text-indigo-600" />
+      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-xl font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+          <CheckCircle2 className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
           تفاصيل الدروس
         </h3>
 
         <div className="space-y-6">
           {lessonDetails.map((detail) => (
             <div key={detail.chapterId}>
-              <h4 className="font-bold text-slate-700 mb-3 text-sm">
+              <h4 className="font-bold text-slate-700 dark:text-slate-200 mb-3 text-sm">
                 {detail.chapterTitle}
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -256,14 +266,14 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
                     key={lesson.id}
                     className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                       lesson.completed
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        : "bg-slate-50 text-slate-500 border border-slate-200"
+                        ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700"
+                        : "bg-slate-50 dark:bg-slate-700 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-600"
                     }`}
                   >
                     {lesson.completed ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                     ) : (
-                      <Circle className="w-4 h-4 text-slate-400" />
+                      <Circle className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                     )}
                     <span className="truncate max-w-37.5">{lesson.title}</span>
                   </div>

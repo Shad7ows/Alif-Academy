@@ -43,16 +43,16 @@ export const QuizView = ({
         <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => setView("lesson")}
-            className="text-slate-400 hover:text-slate-800"
+            className="text-slate-400 hover:text-slate-800 dark:hover:text-white"
           >
             <XCircle className="w-8 h-8" />
           </button>
-          <div className="flex-1 bg-slate-200 h-4 rounded-full overflow-hidden">
+          <div className="flex-1 bg-slate-200 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
             <div className="bg-indigo-500 h-full w-1/2 rounded-full"></div>
           </div>
         </div>
 
-        <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 leading-tight">
+        <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 dark:text-white leading-tight">
           {quiz.question}
         </h2>
         {quiz.code && (
@@ -64,22 +64,23 @@ export const QuizView = ({
         <div className="grid gap-4">
           {quiz.options.map((opt, idx) => {
             let stateClass =
-              "bg-white border-slate-200 hover:border-indigo-400 hover:bg-indigo-50 text-slate-700";
+              "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-200";
             if (isSubmitted) {
               // Only highlight correct answer if the user selected it correctly
               if (idx === quiz.correctAnswer && idx === selectedOpt)
                 stateClass =
-                  "bg-emerald-50 border-emerald-500 text-emerald-800 ring-4 ring-emerald-500/20";
+                  "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 text-emerald-800 dark:text-emerald-300 ring-4 ring-emerald-500/20";
               // Highlight wrong selection in red
               else if (idx === selectedOpt)
-                stateClass = "bg-rose-50 border-rose-500 text-rose-800";
+                stateClass =
+                  "bg-rose-50 dark:bg-rose-900/20 border-rose-500 text-rose-800 dark:text-rose-300";
               // Dim all other options when wrong answer chosen
               else
                 stateClass =
-                  "bg-slate-50 border-slate-200 text-slate-400 opacity-50";
+                  "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 opacity-50";
             } else if (selectedOpt === idx) {
               stateClass =
-                "bg-indigo-50 border-indigo-500 text-indigo-800 ring-4 ring-indigo-500/20";
+                "bg-indigo-50 dark:bg-indigo-900/20 border-indigo-500 text-indigo-800 dark:text-indigo-300 ring-4 ring-indigo-500/20";
             }
 
             return (
@@ -108,7 +109,7 @@ export const QuizView = ({
         </div>
 
         {!isSubmitted && (
-          <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-200 z-40">
+          <div className="fixed bottom-0 left-0 right-0 p-6 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 z-40">
             <div className="max-w-3xl mx-auto">
               <button
                 onClick={() => selectedOpt !== null && setIsSubmitted(true)}
@@ -116,7 +117,7 @@ export const QuizView = ({
                 className={`w-full py-5 rounded-2xl font-black text-xl transition-all ${
                   selectedOpt !== null
                     ? "bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-600/30"
-                    : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                    : "bg-slate-200 dark:bg-slate-700 text-slate-400 dark:text-slate-500 cursor-not-allowed"
                 }`}
               >
                 تحقق من الإجابة
@@ -133,8 +134,8 @@ export const QuizView = ({
             : "translate-y-full opacity-0 invisible"
         } ${
           isCorrect
-            ? "border-emerald-200 bg-emerald-50"
-            : "border-rose-200 bg-rose-50"
+            ? "border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20"
+            : "border-rose-200 dark:border-rose-700 bg-rose-50 dark:bg-rose-900/20"
         }`}
       >
         <div className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
@@ -142,8 +143,8 @@ export const QuizView = ({
             <div
               className={`p-3 rounded-full mt-1 ${
                 isCorrect
-                  ? "bg-emerald-100 text-emerald-600"
-                  : "bg-rose-100 text-rose-600"
+                  ? "bg-emerald-100 dark:bg-emerald-800 text-emerald-600 dark:text-emerald-300"
+                  : "bg-rose-100 dark:bg-rose-800 text-rose-600 dark:text-rose-300"
               }`}
             >
               {isCorrect ? (
@@ -155,14 +156,18 @@ export const QuizView = ({
             <div>
               <h3
                 className={`font-black text-2xl mb-2 ${
-                  isCorrect ? "text-emerald-800" : "text-rose-800"
+                  isCorrect
+                    ? "text-emerald-800 dark:text-emerald-200"
+                    : "text-rose-800 dark:text-rose-200"
                 }`}
               >
                 {isCorrect ? "أحسنت بطل!" : "إجابة خاطئة"}
               </h3>
               <p
                 className={`text-lg font-medium leading-relaxed ${
-                  isCorrect ? "text-emerald-700/80" : "text-rose-700/80"
+                  isCorrect
+                    ? "text-emerald-700/80 dark:text-emerald-300/80"
+                    : "text-rose-700/80 dark:text-rose-300/80"
                 }`}
               >
                 {quiz.explanation}

@@ -3,9 +3,33 @@
 
 @import "tailwindcss";
 
+/* Dark mode variant for Tailwind v4 */
+@variant dark (&:is(.dark *));
+
+/* CSS Variables for Dark Mode */
+:root {
+  --background: #f1f5f9;
+  --surface: #ffffff;
+  --surface-border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+}
+
+.dark {
+  --background: #0f172a;
+  --surface: #1e293b;
+  --surface-border: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+}
+
 body {
   font-family: "Tajawal", system-ui, sans-serif;
-  background-color: #f1f5f9;
+  background-color: var(--background);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 pre,
 code {

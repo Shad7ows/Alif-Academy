@@ -103,14 +103,14 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
       {/* Back Button */}
       <button
         onClick={onBack}
-        className="mb-6 flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors font-medium"
+        className="mb-6 flex items-center gap-2 text-slate-600 hover:text-indigo-600 transition-colors font-medium dark:text-slate-400 dark:hover:text-indigo-400"
       >
         <ArrowRight className="w-4 h-4" />
         <span>العودة للرئيسية</span>
       </button>
 
       {/* Header */}
-      <div className="bg-slate-800 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+      <div className="bg-slate-800 dark:bg-slate-900 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
         <div className="absolute -right-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
         <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
 
@@ -125,7 +125,7 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
           {/* Title */}
           <div className="text-center md:text-right flex-1">
             <h2 className="text-3xl font-black mb-1">الإعدادات</h2>
-            <p className="text-slate-300 text-sm">
+            <p className="text-slate-300 text-sm dark:text-slate-400">
               تحكم في مظهر حسابك وإعدادات الخصوصية
             </p>
           </div>
@@ -133,9 +133,9 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
       </div>
 
       {/* Theme Section */}
-      <div className="bg-white rounded-3xl p-6 mb-6 shadow-sm border border-slate-200">
-        <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
-          <Palette className="w-5 h-5 text-indigo-600" />
+      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 mb-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2 dark:text-white">
+          <Palette className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
           المظهر
         </h3>
 
@@ -146,14 +146,16 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
             disabled={theme === "light" || themeLoading}
             className={`relative p-6 rounded-2xl border-2 transition-all text-right ${
               theme === "light"
-                ? "border-indigo-500 bg-indigo-50 shadow-md"
-                : "border-slate-200 bg-slate-50 hover:border-slate-300"
+                ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 shadow-md"
+                : "border-slate-200 bg-slate-50 hover:border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:hover:border-slate-500"
             }`}
           >
             <div className="flex items-center justify-between mb-3">
               <Sun
                 className={`w-8 h-8 ${
-                  theme === "light" ? "text-amber-500" : "text-slate-400"
+                  theme === "light"
+                    ? "text-amber-500"
+                    : "text-slate-400 dark:text-slate-500"
                 }`}
               />
               {theme === "light" && (
@@ -164,12 +166,14 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
             </div>
             <span
               className={`font-bold ${
-                theme === "light" ? "text-indigo-700" : "text-slate-600"
+                theme === "light"
+                  ? "text-indigo-700 dark:text-indigo-300"
+                  : "text-slate-600 dark:text-slate-300"
               }`}
             >
               الوضع الفاتح
             </span>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 mt-1 dark:text-slate-400">
               خلفية فاتحة للقراءة المريحة
             </p>
           </button>
@@ -180,14 +184,16 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
             disabled={theme === "dark" || themeLoading}
             className={`relative p-6 rounded-2xl border-2 transition-all text-right ${
               theme === "dark"
-                ? "border-indigo-500 bg-indigo-50 shadow-md"
-                : "border-slate-200 bg-slate-50 hover:border-slate-300"
+                ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 shadow-md"
+                : "border-slate-200 bg-slate-50 hover:border-slate-300 dark:border-slate-600 dark:bg-slate-700 dark:hover:border-slate-500"
             }`}
           >
             <div className="flex items-center justify-between mb-3">
               <Moon
                 className={`w-8 h-8 ${
-                  theme === "dark" ? "text-indigo-500" : "text-slate-400"
+                  theme === "dark"
+                    ? "text-indigo-500"
+                    : "text-slate-400 dark:text-slate-500"
                 }`}
               />
               {theme === "dark" && (
@@ -198,12 +204,14 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
             </div>
             <span
               className={`font-bold ${
-                theme === "dark" ? "text-indigo-700" : "text-slate-600"
+                theme === "dark"
+                  ? "text-indigo-700 dark:text-indigo-300"
+                  : "text-slate-600 dark:text-slate-300"
               }`}
             >
               الوضع الداكن
             </span>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 mt-1 dark:text-slate-400">
               خلفية داكنة لراحة العين
             </p>
           </button>
@@ -211,20 +219,20 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
       </div>
 
       {/* Delete Account Section */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-red-200">
-        <h3 className="text-lg font-black text-red-600 mb-6 flex items-center gap-2">
+      <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-red-200 dark:border-red-800">
+        <h3 className="text-lg font-black text-red-600 mb-6 flex items-center gap-2 dark:text-red-400">
           <Trash2 className="w-5 h-5" />
           منطقة الخطر
         </h3>
 
-        <div className="bg-red-50 rounded-2xl p-5 border border-red-100">
+        <div className="bg-red-50 dark:bg-red-900/20 rounded-2xl p-5 border border-red-100 dark:border-red-800">
           <div className="flex items-start gap-3 mb-4">
             <AlertTriangle className="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-bold text-red-700 mb-1">
+              <h4 className="font-bold text-red-700 mb-1 dark:text-red-300">
                 حذف الحساب نهائياً
               </h4>
-              <p className="text-sm text-red-600/80">
+              <p className="text-sm text-red-600/80 dark:text-red-400/70">
                 عند حذف حسابك، سيتم إزالة جميع بياناتك ودروسك المكملة ونقاط
                 خبرتك بشكل لا يمكن التراجع عنه.
               </p>
@@ -237,7 +245,7 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
               setDeleteConfirmEmail("");
               setShowDeleteModal(true);
             }}
-            className="w-full py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors"
+            className="w-full py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors dark:bg-red-600 dark:hover:bg-red-700"
           >
             حذف حسابي
           </button>
@@ -248,40 +256,40 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div
-            className="bg-white rounded-3xl p-8 w-full max-w-md shadow-2xl animate-fade-in"
+            className="bg-white dark:bg-slate-800 rounded-3xl p-8 w-full max-w-md shadow-2xl animate-fade-in"
             onClick={(e) => e.stopPropagation()}
           >
             {deleteSuccess ? (
               <div className="text-center py-6">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Trash2 className="w-8 h-8 text-red-600" />
+                <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Trash2 className="w-8 h-8 text-red-600 dark:text-red-400" />
                 </div>
-                <h3 className="text-xl font-black text-slate-800 mb-2">
+                <h3 className="text-xl font-black text-slate-800 mb-2 dark:text-white">
                   تم حذف الحساب
                 </h3>
-                <p className="text-slate-500 text-sm">
+                <p className="text-slate-500 text-sm dark:text-slate-400">
                   تم حذف حسابك وجميع بياناتك بنجاح
                 </p>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-black text-red-600 flex items-center gap-2">
+                  <h3 className="text-xl font-black text-red-600 flex items-center gap-2 dark:text-red-400">
                     <Trash2 className="w-5 h-5" />
                     تأكيد حذف الحساب
                   </h3>
                   <button
                     onClick={() => setShowDeleteModal(false)}
-                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+                    className="p-2 hover:bg-slate-100 rounded-lg transition-colors dark:hover:bg-slate-700"
                   >
-                    <X className="w-5 h-5 text-slate-400" />
+                    <X className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                   </button>
                 </div>
 
-                <div className="bg-red-50 rounded-xl p-4 mb-6 border border-red-100">
+                <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-4 mb-6 border border-red-100 dark:border-red-800">
                   <div className="flex items-start gap-2">
                     <AlertTriangle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-600">
+                    <p className="text-sm text-red-600 dark:text-red-400">
                       هذه العملية لا رجعة فيها. سيتم حذف جميع بياناتك بشكل
                       نهائي.
                     </p>
@@ -289,20 +297,20 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
                 </div>
 
                 {deleteError && (
-                  <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm mb-4 text-center">
+                  <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm mb-4 text-center border border-red-100 dark:border-red-800">
                     {deleteError}
                   </div>
                 )}
 
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300">
                     اكتب بريدك الإلكتروني للتأكيد
                   </label>
                   <input
                     type="email"
                     value={deleteConfirmEmail}
                     onChange={(e) => setDeleteConfirmEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent text-center font-medium"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent text-center font-medium bg-white dark:bg-slate-700 text-slate-800 dark:text-white"
                     placeholder="بريدك الإلكتروني"
                     autoFocus
                   />
@@ -311,7 +319,7 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
                 <div className="flex gap-3">
                   <button
                     onClick={() => setShowDeleteModal(false)}
-                    className="flex-1 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-200 transition-colors"
+                    className="flex-1 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-bold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors"
                   >
                     إلغاء
                   </button>

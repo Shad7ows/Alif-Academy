@@ -50,27 +50,29 @@ export const ChapterView = ({
     <div className="max-w-3xl mx-auto animate-fade-in-up pb-20">
       <button
         onClick={() => setView("dashboard")}
-        className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors font-bold group"
+        className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors font-bold group dark:text-slate-400"
       >
         <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
         العودة للمسار{" "}
       </button>
 
-      <div className="bg-white rounded-4xl p-8 shadow-sm border border-slate-200 mb-10 text-center">
+      <div className="bg-white dark:bg-slate-800 rounded-4xl p-8 shadow-sm border border-slate-200 dark:border-slate-700 mb-10 text-center">
         <div
           className={`w-20 h-20 mx-auto rounded-3xl mb-4 flex items-center justify-center bg-linear-to-br ${activeChapter.color} text-white shadow-lg`}
         >
           <activeChapter.icon className="w-10 h-10" />
         </div>
-        <h1 className="text-3xl font-black text-slate-800 mb-2">
+        <h1 className="text-3xl font-black text-slate-800 dark:text-white mb-2">
           {activeChapter.title}
         </h1>
-        <p className="text-slate-500 text-lg">{activeChapter.description}</p>
+        <p className="text-slate-500 dark:text-slate-400 text-lg">
+          {activeChapter.description}
+        </p>
       </div>
 
       <div className="relative pl-4 md:pl-0">
         {/* Timeline Line */}
-        <div className="absolute right-10 md:right-1/2 top-4 bottom-4 w-1 bg-slate-200 rounded-full transform md:translate-x-1/2"></div>
+        <div className="absolute right-10 md:right-1/2 top-4 bottom-4 w-1 bg-slate-200 dark:bg-slate-700 rounded-full transform md:translate-x-1/2"></div>
 
         <div className="space-y-12">
           {activeChapter.lessons.map((lesson: Lesson, idx: number) => {
@@ -99,21 +101,21 @@ export const ChapterView = ({
                   onClick={() => !isLocked && startLesson(idx)}
                 >
                   <div
-                    className={`bg-white p-5 rounded-2xl border-2 shadow-sm flex items-center gap-4 ${
+                    className={`bg-white dark:bg-slate-800 p-5 rounded-2xl border-2 shadow-sm flex items-center gap-4 ${
                       isLocked
-                        ? "border-slate-100"
+                        ? "border-slate-100 dark:border-slate-700"
                         : isCompleted
-                        ? "border-emerald-200 hover:border-emerald-400"
-                        : "border-indigo-200 hover:border-indigo-400"
+                        ? "border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500"
+                        : "border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 dark:hover:border-indigo-500"
                     }`}
                   >
                     <div
                       className={`p-3 rounded-xl ${
                         isCompleted
-                          ? "bg-emerald-100 text-emerald-600"
+                          ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
                           : isLocked
-                          ? "bg-slate-100 text-slate-400"
-                          : "bg-indigo-100 text-indigo-600"
+                          ? "bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500"
+                          : "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
                       }`}
                     >
                       {isCompleted ? (
@@ -125,10 +127,10 @@ export const ChapterView = ({
                       )}
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-slate-400">
+                      <span className="text-xs font-bold text-slate-400 dark:text-slate-500">
                         الدرس {idx + 1}
                       </span>
-                      <h4 className="text-lg font-bold text-slate-800 leading-tight">
+                      <h4 className="text-lg font-bold text-slate-800 dark:text-white leading-tight">
                         {lesson.title}
                       </h4>
                     </div>
@@ -136,13 +138,13 @@ export const ChapterView = ({
                 </div>
 
                 {/* Center Dot */}
-                <div className="absolute right-6 md:right-1/2 w-8 h-8 rounded-full border-4 border-white bg-slate-200 shadow-md transform md:translate-x-1/2 order-2 z-10 flex items-center justify-center">
+                <div className="absolute right-6 md:right-1/2 w-8 h-8 rounded-full border-4 border-white dark:border-slate-800 bg-slate-200 dark:bg-slate-700 shadow-md transform md:translate-x-1/2 order-2 z-10 flex items-center justify-center">
                   <div
                     className={`w-3 h-3 rounded-full ${
                       isCompleted
                         ? "bg-emerald-500"
                         : isLocked
-                        ? "bg-slate-300"
+                        ? "bg-slate-300 dark:bg-slate-500"
                         : "bg-indigo-500 animate-pulse"
                     }`}
                   ></div>

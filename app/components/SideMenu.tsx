@@ -104,7 +104,7 @@ export function SideMenu({
 
       {/* Side Menu */}
       <div
-        className={`fixed top-0 right-0 h-full w-96 max-w-[90vw] bg-white shadow-2xl z-50 transform transition-transform duration-500 ease-out ${
+        className={`fixed top-0 right-0 h-full w-96 max-w-[90vw] bg-white dark:bg-slate-800 shadow-2xl z-50 transform transition-transform duration-500 ease-out ${
           isOpen ? "translate-x-0" : "translate-x-full shadow-none"
         }`}
       >
@@ -141,7 +141,7 @@ export function SideMenu({
 
         {/* User Info Card - Overlapping Header */}
         <div className="relative -mt-12 px-6">
-          <div className="bg-white/85 rounded-2xl shadow-lg border border-slate-100 p-5 backdrop-blur-sm">
+          <div className="bg-white/85 dark:bg-slate-700/85 rounded-2xl shadow-lg border border-slate-100 dark:border-slate-600 p-5 backdrop-blur-sm">
             <div className="flex items-start gap-4">
               {/* Circular Avatar */}
               <div className="relative shrink-0">
@@ -164,10 +164,10 @@ export function SideMenu({
 
               {/* User Info */}
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-slate-800 text-lg truncate mb-1">
+                <h3 className="font-bold text-slate-800 dark:text-white text-lg truncate mb-1">
                   {getDisplayName()}
                 </h3>
-                <div className="flex items-center gap-1.5 text-slate-500 text-sm">
+                <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm">
                   <Mail className="w-3.5 h-3.5" />
                   <span className="truncate">{user.email}</span>
                 </div>
@@ -175,19 +175,19 @@ export function SideMenu({
             </div>
 
             {/* Stats Row */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-600">
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-lg">
-                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  <span className="font-bold text-amber-700 text-sm">
+                <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg">
+                  <Star className="w-4 h-4 text-amber-500 dark:text-amber-400 fill-amber-500 dark:fill-amber-400" />
+                  <span className="font-bold text-amber-700 dark:text-amber-300 text-sm">
                     {xp} نقطة
                   </span>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-lg">
-                  <Trophy className="w-4 h-4 text-emerald-500" />
-                  <span className="font-bold text-emerald-700 text-sm">
+                <div className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1.5 rounded-lg">
+                  <Trophy className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                  <span className="font-bold text-emerald-700 dark:text-emerald-300 text-sm">
                     {completedLessons} دروس مكتملة
                   </span>
                 </div>
@@ -204,10 +204,10 @@ export function SideMenu({
               onNavigateToProfile?.();
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group"
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
           >
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <User className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <User className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>الملف الشخصي</span>
           </button>
@@ -218,18 +218,18 @@ export function SideMenu({
               onNavigateToSettings?.();
               onClose();
             }}
-            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group"
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
           >
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <Settings className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <Settings className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>الإعدادات</span>
           </button>
 
           {/* زر الإنجازات/الشهادات */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <Medal className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group">
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <Medal className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>الإنجازات</span>
           </button>
@@ -237,39 +237,39 @@ export function SideMenu({
           {/* زر الإحصائيات */}
           <button
             onClick={onNavigateToStatistics}
-            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group"
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
           >
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <BarChart3 className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <BarChart3 className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>الإحصائيات</span>
           </button>
 
           {/* زر المساعدة/الدعم */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <HelpCircle className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group">
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <HelpCircle className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>المساعدة</span>
           </button>
 
           {/* زر حول التطبيق */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
-            <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
-              <Info className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
+          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group">
+            <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
+              <Info className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
             <span>حول التطبيق</span>
           </button>
         </div>
 
         {/* Bottom Section */}
-        <div className="absolute bottom-15 left-0 right-0 px-6 py-4 bg-linear-to-t from-white via-white to-transparent pt-12">
+        <div className="absolute bottom-15 left-0 right-0 px-6 py-4 bg-linear-to-t from-white dark:from-slate-800 via-white dark:via-slate-800 to-transparent pt-12">
           {/* Ko-fi Button */}
           <a
             href="https://ko-fi.com/aliflang"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-orange-50 hover:bg-orange-100 text-orange-600 rounded-xl font-medium transition-all duration-200 mb-4 border border-orange-100 hover:border-orange-200 group"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl font-medium transition-all duration-200 mb-4 border border-orange-100 dark:border-orange-800 hover:border-orange-200 dark:hover:border-orange-700 group"
           >
             <Image
               src={KoFiCOIN}
@@ -285,7 +285,7 @@ export function SideMenu({
           <button
             onClick={handleSignOut}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition-all duration-200 font-medium disabled:opacity-50 border border-rose-100 hover:border-rose-200 group"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl transition-all duration-200 font-medium disabled:opacity-50 border border-rose-100 dark:border-red-800 hover:border-rose-200 dark:hover:border-red-700 group"
           >
             <LogOut className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             <span>تسجيل الخروج</span>
@@ -295,9 +295,9 @@ export function SideMenu({
         {/* Footer */}
         <div
           dir="ltr"
-          className="absolute bottom-0 left-0 right-0 bg-slate-50 border-t border-slate-100 pt-4 pb-4"
+          className="absolute bottom-0 left-0 right-0 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-700 pt-4 pb-4"
         >
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-slate-400 dark:text-slate-500">
             © 2026 مدرسة ألف - جميع الحقوق محفوظة لصالح منظمة ألف
           </p>
         </div>
