@@ -262,10 +262,10 @@ export function SideMenu({
           </button>
 
           {/* Spacer to push the Bottom Section to the bottom */}
-          <div className="flex-1" />
+          <div className="flex-1 " />
 
           {/* Bottom Section */}
-          <div className="bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+          <div className="pt-7 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
             {/* Ko-fi Button */}
             <a
               href="https://ko-fi.com/aliflang"
