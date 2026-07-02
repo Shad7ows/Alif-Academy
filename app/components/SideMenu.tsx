@@ -25,6 +25,7 @@ interface SideMenuProps {
   xp?: number;
   completedLessons?: number;
   onNavigateToStatistics?: () => void;
+  onNavigateToProfile?: () => void;
 }
 
 export function SideMenu({
@@ -33,6 +34,7 @@ export function SideMenu({
   xp = 0,
   completedLessons = 0,
   onNavigateToStatistics,
+  onNavigateToProfile,
 }: SideMenuProps) {
   const { user, loading, signOut } = useAuth();
 
@@ -195,7 +197,13 @@ export function SideMenu({
         {/* Menu Items */}
         <div className="px-6 pt-12 space-y-3">
           {/* الملف الشخصي Button */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+          <button
+            onClick={() => {
+              onNavigateToProfile?.();
+              onClose();
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group"
+          >
             <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
               <User className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
             </div>

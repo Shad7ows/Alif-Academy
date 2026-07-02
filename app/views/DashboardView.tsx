@@ -42,8 +42,8 @@ export const DashboardView = ({
             <span className="text-2xl font-black text-amber-600">
               {userData.xp}
             </span>
-            <span className="text-amber-700/70 text-sm font-bold">
-              نقطة (XP)
+            <span className="text-amber-600/90 text-base font-bold">
+              نقطة خبرة
             </span>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { ChapterView } from "./views/ChapterView";
 import { LessonView } from "./views/LessonView";
 import { QuizView } from "./views/QuizView";
 import { StatisticsView } from "./views/StatisticsView";
+import { ProfileView } from "./views/ProfileView";
 import { SideMenu } from "./components/SideMenu";
 import { CHAPTERS } from "./chapters";
 import { TerminalSquare, Trophy, Star, Menu, Loader2 } from "lucide-react";
@@ -22,7 +23,7 @@ export default function AlifProPlatform() {
     error: progressError,
     completeLesson,
   } = useUserProgress(user?.id ?? null);
-  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics
+  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics, profile
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -114,6 +115,7 @@ export default function AlifProPlatform() {
         xp={userData.xp}
         completedLessons={userData.completedLessons.length}
         onNavigateToStatistics={() => setView("statistics")}
+        onNavigateToProfile={() => setView("profile")}
       />
       <header className="sticky bg-white/40 backdrop-blur-md top-0 z-30 border-b border-slate-200 mb-8">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -193,6 +195,12 @@ export default function AlifProPlatform() {
         )}
         {view === "statistics" && (
           <StatisticsView
+            userData={userData}
+            onBack={() => setView("dashboard")}
+          />
+        )}
+        {view === "profile" && (
+          <ProfileView
             userData={userData}
             onBack={() => setView("dashboard")}
           />

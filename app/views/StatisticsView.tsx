@@ -117,7 +117,7 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <Star className="w-6 h-6 mx-auto mb-2 text-amber-400 fill-amber-300" />
             <p className="text-2xl font-black">{stats.xp}</p>
-            <p className="text-indigo-100 text-xs">نقطة XP</p>
+            <p className="text-indigo-100 text-xs">نقطة خبرة</p>
           </div>
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <Target className="w-6 h-6 mx-auto mb-2 text-purple-400" />
