@@ -24,6 +24,7 @@ interface SideMenuProps {
   onClose: () => void;
   xp?: number;
   completedLessons?: number;
+  onNavigateToStatistics?: () => void;
 }
 
 export function SideMenu({
@@ -31,6 +32,7 @@ export function SideMenu({
   onClose,
   xp = 0,
   completedLessons = 0,
+  onNavigateToStatistics,
 }: SideMenuProps) {
   const { user, loading, signOut } = useAuth();
 
@@ -217,7 +219,10 @@ export function SideMenu({
           </button>
 
           {/* زر الإحصائيات */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group">
+          <button
+            onClick={onNavigateToStatistics}
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 hover:bg-sky-50 rounded-xl transition-all duration-200 text-slate-700 font-medium border border-transparent hover:border-sky-100 group"
+          >
             <div className="p-2 bg-slate-200/50 group-hover:bg-sky-100 rounded-lg transition-colors">
               <BarChart3 className="w-5 h-5 text-slate-500 group-hover:text-sky-600" />
             </div>

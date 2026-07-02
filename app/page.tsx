@@ -6,6 +6,7 @@ import { DashboardView } from "./views/DashboardView";
 import { ChapterView } from "./views/ChapterView";
 import { LessonView } from "./views/LessonView";
 import { QuizView } from "./views/QuizView";
+import { StatisticsView } from "./views/StatisticsView";
 import { SideMenu } from "./components/SideMenu";
 import { CHAPTERS } from "./chapters";
 import { TerminalSquare, Trophy, Star, Menu, Loader2 } from "lucide-react";
@@ -21,7 +22,7 @@ export default function AlifProPlatform() {
     error: progressError,
     completeLesson,
   } = useUserProgress(user?.id ?? null);
-  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz
+  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -112,6 +113,7 @@ export default function AlifProPlatform() {
         onClose={() => setMenuOpen(false)}
         xp={userData.xp}
         completedLessons={userData.completedLessons.length}
+        onNavigateToStatistics={() => setView("statistics")}
       />
       <header className="sticky bg-white/40 backdrop-blur-md top-0 z-30 border-b border-slate-200 mb-8">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -187,6 +189,12 @@ export default function AlifProPlatform() {
             activeLesson={activeLesson}
             handleQuizSuccess={() => handleQuizSuccess(activeLesson.id)}
             setView={setView}
+          />
+        )}
+        {view === "statistics" && (
+          <StatisticsView
+            userData={userData}
+            onBack={() => setView("dashboard")}
           />
         )}
       </main>
