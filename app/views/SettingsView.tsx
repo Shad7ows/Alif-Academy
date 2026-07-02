@@ -31,14 +31,13 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
         | "dark"
         | null;
       if (savedTheme === "dark") {
-        document.documentElement.classList.add("dark");
         return "dark";
       }
     }
     return "light";
   };
 
-  const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme);
+  const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme());
   const [themeLoading, setThemeLoading] = useState(false);
 
   // Delete account state

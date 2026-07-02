@@ -231,7 +231,7 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
                 </div>
 
                 {/* Chapter Progress Bar */}
-                <div className="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden mr-12">
+                <div className="w-full bg-slate-100 dark:bg-slate-700 h-3 rounded-full overflow-hidden">
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ${
                       chapter.percentage === 100

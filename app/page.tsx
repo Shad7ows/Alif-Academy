@@ -133,7 +133,10 @@ export default function AlifProPlatform() {
             onClick={() => setView("dashboard")}
           >
             <button
-              onClick={() => setMenuOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setMenuOpen(true);
+              }}
               className="hidden md:flex p-2 ml-4 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
             >
               <Menu className="w-6 h-6 text-slate-700 dark:text-slate-300" />
