@@ -20,7 +20,7 @@ const highlightAlif = (code: string) => {
     (match, p1, p2) => {
       tokens.push(`<span class="text-orange-300">${p2}</span>`);
       return `${p1}__TOKEN_${tokenIdx++}_END__`;
-    }
+    },
   );
 
   const keywords = [
@@ -52,7 +52,7 @@ const highlightAlif = (code: string) => {
   keywords.forEach((kw) => {
     const reg = new RegExp(
       `(^|\\s|\\(|\\)|\\[|\\]|:)(${kw})(?=\\s|\\(|\\)|\\[|\\]|:|$)`,
-      "g"
+      "g",
     );
     h = h.replace(reg, (match, p1, p2) => {
       tokens.push(`<span class="text-pink-400 font-bold">${p2}</span>`);
@@ -65,7 +65,7 @@ const highlightAlif = (code: string) => {
     (match) => {
       tokens.push(`<span class="text-cyan-400">${match}</span>`);
       return `__TOKEN_${tokenIdx++}_END__`;
-    }
+    },
   );
 
   for (let i = tokenIdx - 1; i >= 0; i--) {
@@ -100,7 +100,7 @@ export const AlifIDE = ({
 
   return (
     <div
-      className="rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-[#0d1117] my-6 font-Tajawal text-right"
+      className="rounded-xl overflow-hidden shadow-2xl border border-slate-700 bg-[#0d1117] my-6 text-right"
       dir="rtl"
     >
       <div className="bg-slate-800 px-4 py-3 flex items-center justify-between border-b border-slate-700">

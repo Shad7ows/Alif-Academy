@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=NotoKufiArabic:wght@400;500;700;800;900&display=swap");
-
 @import "tailwindcss";
 
 /* Dark mode variant for Tailwind v4 */
@@ -25,16 +22,21 @@
   --text-tertiary: #64748b;
 }
 
+/* Use CSS variables from next/font/local for font-family */
 body {
-  font-family: "Tajawal", system-ui, sans-serif;
+  font-family: var(--font-tajawal), system-ui, sans-serif;
   background-color: var(--background);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
+
 pre,
 code {
   font-family:
-    "Noto Kufi Arabic", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    var(--font-noto-kufi-arabic), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 }
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
