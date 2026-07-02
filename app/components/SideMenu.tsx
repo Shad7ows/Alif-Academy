@@ -196,8 +196,8 @@ export function SideMenu({
           </div>
         </div>
 
-        {/* Menu Items */}
-        <div className="px-6 pt-12 space-y-3">
+        {/* Menu Items - Scrollable Container */}
+        <div className="px-6 pt-12 pb-36 overflow-y-auto flex flex-col space-y-3 h-[calc(100svh-14rem)] side-menu-scroll">
           {/* الملف الشخصي Button */}
           <button
             onClick={() => {
@@ -260,36 +260,39 @@ export function SideMenu({
             </div>
             <span>حول التطبيق</span>
           </button>
-        </div>
 
-        {/* Bottom Section */}
-        <div className="absolute bottom-15 left-0 right-0 px-6 py-4 bg-linear-to-t from-white dark:from-slate-800 via-white dark:via-slate-800 to-transparent pt-12">
-          {/* Ko-fi Button */}
-          <a
-            href="https://ko-fi.com/aliflang"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl font-medium transition-all duration-200 mb-4 border border-orange-100 dark:border-orange-800 hover:border-orange-200 dark:hover:border-orange-700 group"
-          >
-            <Image
-              src={KoFiCOIN}
-              alt="Ko-fi"
-              width={20}
-              height={20}
-              className="group-hover:scale-110 transition-transform"
-            />
-            <span>ادعمنا على Ko-fi</span>
-          </a>
+          {/* Spacer to push the Bottom Section to the bottom */}
+          <div className="flex-1" />
 
-          {/* Sign Out Button */}
-          <button
-            onClick={handleSignOut}
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl transition-all duration-200 font-medium disabled:opacity-50 border border-rose-100 dark:border-red-800 hover:border-rose-200 dark:hover:border-red-700 group"
-          >
-            <LogOut className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <span>تسجيل الخروج</span>
-          </button>
+          {/* Bottom Section */}
+          <div className="bottom-0 left-0 right-0 bg-white dark:bg-slate-800 border-t border-slate-100 dark:border-slate-700">
+            {/* Ko-fi Button */}
+            <a
+              href="https://ko-fi.com/aliflang"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl font-medium transition-all duration-200 mb-4 border border-orange-100 dark:border-orange-800 hover:border-orange-200 dark:hover:border-orange-700 group"
+            >
+              <Image
+                src={KoFiCOIN}
+                alt="Ko-fi"
+                width={20}
+                height={20}
+                className="group-hover:scale-110 transition-transform"
+              />
+              <span>ادعمنا على Ko-fi</span>
+            </a>
+
+            {/* Sign Out Button */}
+            <button
+              onClick={handleSignOut}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400 rounded-xl transition-all duration-200 font-medium disabled:opacity-50 border border-rose-100 dark:border-red-800 hover:border-rose-200 dark:hover:border-red-700 group"
+            >
+              <LogOut className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <span>تسجيل الخروج</span>
+            </button>
+          </div>
         </div>
 
         {/* Footer */}
