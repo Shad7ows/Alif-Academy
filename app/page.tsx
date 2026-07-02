@@ -9,6 +9,7 @@ import { QuizView } from "./views/QuizView";
 import { StatisticsView } from "./views/StatisticsView";
 import { ProfileView } from "./views/ProfileView";
 import { SettingsView } from "./views/SettingsView";
+import { AchievementsView } from "./views/AchievementsView";
 import { SideMenu } from "./components/SideMenu";
 import { CHAPTERS } from "./chapters";
 import { TerminalSquare, Trophy, Star, Menu, Loader2 } from "lucide-react";
@@ -24,7 +25,7 @@ export default function AlifProPlatform() {
     error: progressError,
     completeLesson,
   } = useUserProgress(user?.id ?? null);
-  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics, profile, settings
+  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics, profile, settings, achievements
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function AlifProPlatform() {
       setView("chapter"); // Return to chapter timeline
       window.scrollTo(0, 0);
     },
-    [completeLesson]
+    [completeLesson],
   );
 
   // عرض حالة التحميل
@@ -125,6 +126,7 @@ export default function AlifProPlatform() {
         onNavigateToStatistics={() => setView("statistics")}
         onNavigateToProfile={() => setView("profile")}
         onNavigateToSettings={() => setView("settings")}
+        onNavigateToAchievements={() => setView("achievements")}
       />
       <header className="sticky bg-white/80 dark:bg-slate-800/80 backdrop-blur-md top-0 z-30 border-b border-slate-200 dark:border-slate-700 mb-8">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -218,6 +220,12 @@ export default function AlifProPlatform() {
         )}
         {view === "profile" && (
           <ProfileView
+            userData={userData}
+            onBack={() => setView("dashboard")}
+          />
+        )}
+        {view === "achievements" && (
+          <AchievementsView
             userData={userData}
             onBack={() => setView("dashboard")}
           />
