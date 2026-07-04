@@ -153,13 +153,16 @@ export function useUserProgress(userId: string | null) {
 
       const previousData = { ...userData };
 
-      setUserData((prev) => ({
-        ...prev,
-        completedLessons: prev.completedLessons.includes(lessonId)
-          ? prev.completedLessons
-          : [...prev.completedLessons, lessonId],
-        xp: prev.xp + score,
-      }));
+      setUserData((prev) => {
+        const isAlreadyCompleted = prev.completedLessons.includes(lessonId);
+        return {
+          ...prev,
+          completedLessons: isAlreadyCompleted
+            ? prev.completedLessons
+            : [...prev.completedLessons, lessonId],
+          xp: isAlreadyCompleted ? prev.xp : prev.xp + score,
+        };
+      });
 
       try {
         const { error } = await supabase.from("user_progress").upsert(
