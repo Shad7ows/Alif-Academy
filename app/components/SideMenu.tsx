@@ -28,6 +28,8 @@ interface SideMenuProps {
   onNavigateToProfile?: () => void;
   onNavigateToSettings?: () => void;
   onNavigateToAchievements?: () => void;
+  onNavigateToHelp?: () => void;
+  onNavigateToAbout?: () => void;
 }
 
 export function SideMenu({
@@ -39,6 +41,8 @@ export function SideMenu({
   onNavigateToProfile,
   onNavigateToSettings,
   onNavigateToAchievements,
+  onNavigateToHelp,
+  onNavigateToAbout,
 }: SideMenuProps) {
   const { user, loading, signOut } = useAuth();
 
@@ -244,7 +248,10 @@ export function SideMenu({
 
           {/* زر الإحصائيات */}
           <button
-            onClick={onNavigateToStatistics}
+            onClick={() => {
+              onNavigateToStatistics?.();
+              onClose();
+            }}
             className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
           >
             <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
@@ -254,7 +261,13 @@ export function SideMenu({
           </button>
 
           {/* زر المساعدة/الدعم */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group">
+          <button
+            onClick={() => {
+              onNavigateToHelp?.();
+              onClose();
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
+          >
             <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
               <HelpCircle className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
@@ -262,7 +275,13 @@ export function SideMenu({
           </button>
 
           {/* زر حول التطبيق */}
-          <button className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group">
+          <button
+            onClick={() => {
+              onNavigateToAbout?.();
+              onClose();
+            }}
+            className="w-full flex items-center gap-3 px-4 py-3.5 bg-slate-100/80 dark:bg-slate-700/50 hover:bg-sky-50 dark:hover:bg-slate-600 rounded-xl transition-all duration-200 text-slate-700 dark:text-slate-200 font-medium border border-transparent hover:border-sky-100 dark:border-slate-600 group"
+          >
             <div className="p-2 bg-slate-200/50 dark:bg-slate-600 group-hover:bg-sky-100 dark:group-hover:bg-slate-500 rounded-lg transition-colors">
               <Info className="w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-sky-600 dark:group-hover:text-sky-400" />
             </div>
