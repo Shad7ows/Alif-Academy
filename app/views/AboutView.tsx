@@ -197,7 +197,7 @@ export function AboutView({ onBack }: AboutViewProps) {
       {/* Vision & Mission */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         {/* Vision */}
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/10 dark:to-purple-900/10 rounded-2xl p-6 border border-indigo-200 dark:border-indigo-800/30">
+        <div className="bg-linear-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/10 dark:to-purple-900/10 rounded-2xl p-6 border border-indigo-200 dark:border-indigo-800/30">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl">
               <Lightbulb className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
@@ -213,7 +213,7 @@ export function AboutView({ onBack }: AboutViewProps) {
         </div>
 
         {/* Mission */}
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10 rounded-2xl p-6 border border-emerald-200 dark:border-emerald-800/30">
+        <div className="bg-linear-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/10 dark:to-teal-900/10 rounded-2xl p-6 border border-emerald-200 dark:border-emerald-800/30">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl">
               <Target className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />

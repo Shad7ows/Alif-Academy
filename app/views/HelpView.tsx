@@ -165,7 +165,7 @@ export function HelpView({ onBack }: HelpViewProps) {
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div
-                    className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-md`}
+                    className={`w-12 h-12 rounded-xl bg-linear-to-br ${step.color} flex items-center justify-center shadow-md`}
                   >
                     <StepIcon className="w-6 h-6 text-white" />
                   </div>
@@ -242,7 +242,7 @@ export function HelpView({ onBack }: HelpViewProps) {
           <Lightbulb className="w-6 h-6 text-amber-600 dark:text-amber-400" />
           نصائح للتعلم الفعال
         </h3>
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-2xl p-6 border border-amber-200 dark:border-amber-800/30">
+        <div className="bg-linear-to-br from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-2xl p-6 border border-amber-200 dark:border-amber-800/30">
           <ul className="space-y-4">
             {[
               {
