@@ -61,7 +61,7 @@ const highlightAlif = (code: string) => {
   });
 
   h = h.replace(
-    /(==|!=|&gt;=|&lt;=|&gt;|&lt;|\+=|-=|\*=|\/=|%=|=|\+|-|\*|\/|%|:)/g,
+    /(==|!=|&gt;=|&lt;=|&gt;|&lt;|\+=|-=|\*=|\/=|\\=|=|\+|-|\*|\/|\\|:)/g,
     (match) => {
       tokens.push(`<span class="text-cyan-400">${match}</span>`);
       return `__TOKEN_${tokenIdx++}_END__`;
