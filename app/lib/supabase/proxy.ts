@@ -28,7 +28,7 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // ✅ استخدام getSession() بدلاً من getUser() في Middleware
+  // استخدام getSession() بدلاً من getUser() في proxy
   // getSession() سريع لأنه يعمل محلياً على الـ Token
   const {
     data: { session },
