@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { GoogleIcon, GitHubIcon } from "@/components/Auth/Icons";
@@ -13,6 +14,7 @@ const signInSchema = z.object({
 });
 
 export default function SignInPage() {
+  const router = useRouter();
   const {
     user,
     loading,
@@ -27,19 +29,12 @@ export default function SignInPage() {
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
 
-  // إذا كان مسجل دخول بالفعل → توجيه
-  if (user) {
-    return (
-      <div className="text-center py-20">
-        <h2 className="text-2xl font-bold text-emerald-600">
-          ✅ أنت مسجل الدخول!
-        </h2>
-        <Link href="/" className="text-indigo-600 underline mt-4 inline-block">
-          العودة للرئيسية
-        </Link>
-      </div>
-    );
-  }
+  // التوجيه التلقائي إلى الصفحة الرئيسية عند تسجيل الدخول
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

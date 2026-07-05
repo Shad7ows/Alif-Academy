@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { Mail, Lock, Eye, EyeOff, User, Calendar } from "lucide-react";
 import Link from "next/link";
@@ -17,6 +18,7 @@ const signUpSchema = z.object({
 });
 
 export default function SignUpPage() {
+  const router = useRouter();
   const { user, loading, error, signUpWithEmail } = useAuth();
   const [fullName, setFullName] = useState("");
   const [age, setAge] = useState<number | "">("");
@@ -27,18 +29,12 @@ export default function SignUpPage() {
   const [formError, setFormError] = useState("");
   const [sent, setSent] = useState(false);
 
-  if (user) {
-    return (
-      <div className="text-center py-20">
-        <h2 className="text-2xl font-bold text-emerald-600">
-          ✅ أنت مسجل الدخول!
-        </h2>
-        <Link href="/" className="text-indigo-600 underline mt-4 inline-block">
-          العودة للرئيسية
-        </Link>
-      </div>
-    );
-  }
+  // التوجيه التلقائي إلى الصفحة الرئيسية عند تسجيل الدخول
+  useEffect(() => {
+    if (user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
