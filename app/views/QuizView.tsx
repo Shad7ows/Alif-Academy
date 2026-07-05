@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AlifIDE } from "../components/AlifIDE";
-import { CheckCircle, XCircle, Check } from "lucide-react";
+import { CheckCircle, XCircle, Check, ChevronLeft } from "lucide-react";
 
 interface Quiz {
   question: string;
@@ -11,6 +11,7 @@ interface Quiz {
   correctAnswer: number;
   explanation: string;
 }
+
 interface Lesson {
   id: string;
   title: string;
@@ -18,7 +19,7 @@ interface Lesson {
   content: string;
   code: string;
   expectedOutput: string;
-  quiz: Quiz;
+  quizzes: Quiz[];
 }
 
 interface QuizViewProps {
@@ -32,14 +33,41 @@ export const QuizView = ({
   handleQuizSuccess,
   setView,
 }: QuizViewProps) => {
-  const quiz = activeLesson.quiz;
+  const quizzes = activeLesson.quizzes;
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOpt, setSelectedOpt] = useState<null | number>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const isCorrect = selectedOpt === quiz.correctAnswer;
+  const [correctCount, setCorrectCount] = useState(0);
+
+  const currentQuiz = quizzes[currentQuestionIndex];
+  const isCorrect = selectedOpt === currentQuiz.correctAnswer;
+  const totalQuestions = quizzes.length;
+  const progressPercent =
+    ((currentQuestionIndex + (isSubmitted && isCorrect ? 1 : 0)) /
+      totalQuestions) *
+    100;
+
+  // Determine if we've completed all questions
+  const allQuestionsCompleted = correctCount === totalQuestions;
+
+  // Handle correct answer navigation
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex < totalQuestions - 1) {
+      // Move to next question and increment correct count
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setCorrectCount((prev) => prev + 1);
+      setSelectedOpt(null);
+      setIsSubmitted(false);
+    } else {
+      // All questions completed
+      handleQuizSuccess();
+    }
+  };
 
   return (
     <>
       <div className="max-w-3xl mx-auto animate-fade-in-up pb-32">
+        {/* Header with progress */}
         <div className="flex items-center gap-4 mb-8">
           <button
             onClick={() => setView("lesson")}
@@ -47,34 +75,46 @@ export const QuizView = ({
           >
             <XCircle className="w-8 h-8" />
           </button>
-          <div className="flex-1 bg-slate-200 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
-            <div className="bg-indigo-500 h-full w-1/2 rounded-full"></div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                السؤال {currentQuestionIndex + 1} من {totalQuestions}
+              </span>
+              <span className="text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                {correctCount}/{totalQuestions} إجابات صحيحة
+              </span>
+            </div>
+            <div className="flex-1 bg-slate-200 dark:bg-slate-700 h-4 rounded-full overflow-hidden">
+              <div
+                className="bg-indigo-500 h-full rounded-full transition-all duration-500"
+                style={{ width: `${progressPercent}%` }}
+              ></div>
+            </div>
           </div>
         </div>
 
+        {/* Question */}
         <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 dark:text-white leading-tight">
-          {quiz.question}
+          {currentQuiz.question}
         </h2>
-        {quiz.code && (
+        {currentQuiz.code && (
           <div className="mb-10">
-            <AlifIDE code={quiz.code} />
+            <AlifIDE code={currentQuiz.code} />
           </div>
         )}
 
+        {/* Options */}
         <div className="grid gap-4">
-          {quiz.options.map((opt, idx) => {
+          {currentQuiz.options.map((opt: string, idx: number) => {
             let stateClass =
               "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-slate-700 dark:text-slate-200";
             if (isSubmitted) {
-              // Only highlight correct answer if the user selected it correctly
-              if (idx === quiz.correctAnswer && idx === selectedOpt)
+              if (idx === currentQuiz.correctAnswer && idx === selectedOpt)
                 stateClass =
                   "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-500 text-emerald-800 dark:text-emerald-300 ring-4 ring-emerald-500/20";
-              // Highlight wrong selection in red
               else if (idx === selectedOpt)
                 stateClass =
                   "bg-rose-50 dark:bg-rose-900/20 border-rose-500 text-rose-800 dark:text-rose-300";
-              // Dim all other options when wrong answer chosen
               else
                 stateClass =
                   "bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 opacity-50";
@@ -94,13 +134,13 @@ export const QuizView = ({
                   {opt}
                 </span>
                 {isSubmitted &&
-                  idx === quiz.correctAnswer &&
-                  selectedOpt === quiz.correctAnswer && (
+                  idx === currentQuiz.correctAnswer &&
+                  selectedOpt === currentQuiz.correctAnswer && (
                     <CheckCircle className="w-8 h-8 text-emerald-500 shrink-0 ml-4 animate-bounce-in" />
                   )}
                 {isSubmitted &&
                   idx === selectedOpt &&
-                  idx !== quiz.correctAnswer && (
+                  idx !== currentQuiz.correctAnswer && (
                     <XCircle className="w-8 h-8 text-rose-500 shrink-0 ml-4 animate-bounce-in" />
                   )}
               </button>
@@ -108,6 +148,7 @@ export const QuizView = ({
           })}
         </div>
 
+        {/* Submit Button */}
         {!isSubmitted && (
           <div className="fixed bottom-0 left-0 right-0 p-6 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 z-40">
             <div className="max-w-3xl mx-auto">
@@ -127,11 +168,12 @@ export const QuizView = ({
         )}
       </div>
 
+      {/* Result Panel */}
       <div
-        className={`fixed bottom-0 left-0 right-0 p-6 md:p-8 border-t-2 transform transition-all duration-500 z-50 ${
+        className={`fixed bottom-0 left-0 right-0 p-6 md:p-8 border-t-2 z-50 ${
           isSubmitted
-            ? "translate-y-0 opacity-100 visible"
-            : "translate-y-full opacity-0 invisible"
+            ? "translate-y-0 opacity-100 visible transform transition-all duration-500"
+            : "translate-y-full opacity-0 invisible transform transition-all duration-0"
         } ${
           isCorrect
             ? "border-emerald-200 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-900/20"
@@ -170,14 +212,14 @@ export const QuizView = ({
                     : "text-rose-700/80 dark:text-rose-300/80"
                 }`}
               >
-                {quiz.explanation}
+                {currentQuiz.explanation}
               </p>
             </div>
           </div>
           <button
             onClick={
               isCorrect
-                ? handleQuizSuccess
+                ? handleNextQuestion
                 : () => {
                     setIsSubmitted(false);
                     setSelectedOpt(null);
@@ -189,7 +231,11 @@ export const QuizView = ({
                 : "bg-rose-500 shadow-rose-500/30"
             }`}
           >
-            {isCorrect ? "المتابعة" : "حاول مجدداً"}
+            {isCorrect
+              ? currentQuestionIndex < totalQuestions - 1
+                ? "السؤال التالي"
+                : "المتابعة"
+              : "حاول مجدداً"}
           </button>
         </div>
       </div>

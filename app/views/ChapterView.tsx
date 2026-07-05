@@ -15,7 +15,7 @@ interface Lesson {
   content: string;
   code: string;
   expectedOutput: string;
-  quiz: Quiz;
+  quizzes: Quiz[];
 }
 
 interface Chapter {
@@ -80,7 +80,7 @@ export const ChapterView = ({
             const isLocked =
               idx > 0 &&
               !userData.completedLessons.includes(
-                activeChapter.lessons[idx - 1].id
+                activeChapter.lessons[idx - 1].id,
               );
             const LessonIcon = lesson.icon || PlayCircle;
 
@@ -105,8 +105,8 @@ export const ChapterView = ({
                       isLocked
                         ? "border-slate-100 dark:border-slate-700"
                         : isCompleted
-                        ? "border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500"
-                        : "border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 dark:hover:border-indigo-500"
+                          ? "border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500"
+                          : "border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 dark:hover:border-indigo-500"
                     }`}
                   >
                     <div
@@ -114,8 +114,8 @@ export const ChapterView = ({
                         isCompleted
                           ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
                           : isLocked
-                          ? "bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500"
-                          : "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+                            ? "bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500"
+                            : "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
                       }`}
                     >
                       {isCompleted ? (
@@ -144,8 +144,8 @@ export const ChapterView = ({
                       isCompleted
                         ? "bg-emerald-500"
                         : isLocked
-                        ? "bg-slate-300 dark:bg-slate-500"
-                        : "bg-indigo-500 animate-pulse"
+                          ? "bg-slate-300 dark:bg-slate-500"
+                          : "bg-indigo-500 animate-pulse"
                     }`}
                   ></div>
                 </div>

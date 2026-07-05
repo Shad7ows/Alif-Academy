@@ -17,7 +17,7 @@ interface Lesson {
   content: string;
   code: string;
   expectedOutput: string;
-  quiz: Quiz;
+  quizzes: Quiz[];
 }
 
 interface Chapter {

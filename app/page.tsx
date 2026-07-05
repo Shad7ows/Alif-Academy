@@ -48,7 +48,8 @@ export default function AlifProPlatform() {
   const handleQuizSuccess = useCallback(
     (lessonId: string) => {
       // إرسال التقدم للسيرفر عبر completeLesson
-      completeLesson(lessonId, 25);
+      // 100 نقطة عند إكمال جميع الأسئلة الثلاثة بنجاح
+      completeLesson(lessonId, 100);
       setView("chapter"); // Return to chapter timeline
       window.scrollTo(0, 0);
     },
