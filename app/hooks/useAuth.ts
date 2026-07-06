@@ -82,9 +82,10 @@ export function useAuth() {
           email,
           password,
         });
-        if (error) throw error;
+        if (error) throw "فشل تسجيل الدخول";
       } catch (e: unknown) {
-        throw e;
+        const message = e instanceof Error ? e : "فشل تسجيل الدخول";
+        throw message;
       } finally {
         setLoading(false);
       }
