@@ -53,9 +53,8 @@ export const QuizView = ({
   // Handle correct answer navigation
   const handleNextQuestion = () => {
     if (currentQuestionIndex < totalQuestions - 1) {
-      // Move to next question and increment correct count
+      // Move to next question
       setCurrentQuestionIndex((prev) => prev + 1);
-      setCorrectCount((prev) => prev + 1);
       setSelectedOpt(null);
       setIsSubmitted(false);
     } else {
@@ -153,7 +152,14 @@ export const QuizView = ({
           <div className="fixed bottom-0 left-0 right-0 p-6 bg-white dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700 z-40">
             <div className="max-w-3xl mx-auto">
               <button
-                onClick={() => selectedOpt !== null && setIsSubmitted(true)}
+                onClick={() => {
+                  if (selectedOpt !== null) {
+                    if (selectedOpt === currentQuiz.correctAnswer) {
+                      setCorrectCount((prev) => prev + 1);
+                    }
+                    setIsSubmitted(true);
+                  }
+                }}
                 disabled={selectedOpt === null}
                 className={`w-full py-5 rounded-2xl font-black text-xl transition-all ${
                   selectedOpt !== null
