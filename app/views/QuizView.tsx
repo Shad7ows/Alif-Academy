@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { AlifIDE } from "../components/AlifIDE";
-import { CheckCircle, XCircle, Check, ChevronLeft } from "lucide-react";
+import { CheckCircle, XCircle, Check } from "lucide-react";
 
 interface Quiz {
   question: string;
@@ -46,9 +46,6 @@ export const QuizView = ({
     ((currentQuestionIndex + (isSubmitted && isCorrect ? 1 : 0)) /
       totalQuestions) *
     100;
-
-  // Determine if we've completed all questions
-  const allQuestionsCompleted = correctCount === totalQuestions;
 
   // Handle correct answer navigation
   const handleNextQuestion = () => {
