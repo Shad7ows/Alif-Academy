@@ -74,12 +74,12 @@ export default function SignUpPage() {
             تم إرسال بريد تأكيد إلى <strong>{email}</strong>. يرجى التحقق من
             بريدك والنقر على الرابط.
           </p>
-          <a
+          <Link
             href="/auth/sign-in"
             className="text-indigo-600 font-medium hover:underline"
           >
             العودة لتسجيل الدخول
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -199,9 +199,9 @@ export default function SignUpPage() {
 
         <p className="text-center text-sm text-slate-500 mt-6">
           لديك حساب?{" "}
-          <a href="/auth/sign-in" className="text-indigo-600 font-medium">
+          <Link href="/auth/sign-in" className="text-indigo-600 font-medium">
             تسجيل الدخول
-          </a>
+          </Link>
         </p>
       </div>
     </div>

@@ -178,18 +178,18 @@ export default function SignInPage() {
 
         <p className="text-center text-sm text-slate-500 mt-6">
           ليس لديك حساب؟{" "}
-          <a href="/auth/sign-up" className="text-indigo-600 font-medium">
+          <Link href="/auth/sign-up" className="text-indigo-600 font-medium">
             إنشاء حساب جديد
-          </a>
+          </Link>
         </p>
 
         <p className="text-center text-sm text-slate-500 mt-2">
-          <a
+          <Link
             href="/auth/reset-password"
             className="text-slate-400 hover:text-slate-600"
           >
             نسيت كلمة المرور؟
-          </a>
+          </Link>
         </p>
       </div>
     </div>
