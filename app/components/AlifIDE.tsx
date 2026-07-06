@@ -20,8 +20,14 @@ const highlightAlif = (code: string) => {
     (match, p1, p2) => {
       tokens.push(`<span class="text-orange-300">${p2}</span>`);
       return `${p1}__TOKEN_${tokenIdx++}_END__`;
-    },
+    }
   );
+
+  // Comments with #
+  h = h.replace(/(^|(?<=\n))#[^\n]*/g, (match) => {
+    tokens.push(`<span class="text-slate-500 italic">${match}</span>`);
+    return `__TOKEN_${tokenIdx++}_END__`;
+  });
 
   const keywords = [
     "دالة",
@@ -38,6 +44,7 @@ const highlightAlif = (code: string) => {
     "او",
     "ليس",
     "صحيح",
+    "صح",
     "خطأ",
     "احذف",
     "طول",
@@ -52,7 +59,7 @@ const highlightAlif = (code: string) => {
   keywords.forEach((kw) => {
     const reg = new RegExp(
       `(^|\\s|\\(|\\)|\\[|\\]|:)(${kw})(?=\\s|\\(|\\)|\\[|\\]|:|$)`,
-      "g",
+      "g"
     );
     h = h.replace(reg, (match, p1, p2) => {
       tokens.push(`<span class="text-pink-400 font-bold">${p2}</span>`);
@@ -65,7 +72,7 @@ const highlightAlif = (code: string) => {
     (match) => {
       tokens.push(`<span class="text-cyan-400">${match}</span>`);
       return `__TOKEN_${tokenIdx++}_END__`;
-    },
+    }
   );
 
   for (let i = tokenIdx - 1; i >= 0; i--) {
