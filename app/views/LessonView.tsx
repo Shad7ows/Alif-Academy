@@ -32,31 +32,111 @@ interface Chapter {
 }
 
 const formatContent = (text: string) => {
-  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
+  // Process line by line to handle ## headings and ``` code blocks
+  const lines = text.split("\n");
+  const result: React.ReactNode[] = [];
+  let inCodeBlock = false;
+  let codeBlockContent: string[] = [];
+  let codeBlockKey = 0;
+  let headingKey = 0;
+  let textKey = 0;
+
+  const processInline = (content: string) => {
+    const parts = content.split(/(\*\*.*?\*\*|`.*?`)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <strong key={i} className="text-slate-800 dark:text-white font-bold">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      if (part.startsWith("`") && part.endsWith("`")) {
+        return (
+          <code
+            key={i}
+            className="bg-slate-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 mx-1 rounded font-mono text-sm md:text-base border border-slate-200 dark:border-slate-600"
+          >
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
       return (
-        <strong key={i} className="text-slate-800 dark:text-white font-bold">
-          {part.slice(2, -2)}
-        </strong>
+        <span key={i} className="whitespace-pre-wrap">
+          {part}
+        </span>
       );
+    });
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Handle code block opening
+    if (line.trim() === "```" && !inCodeBlock) {
+      inCodeBlock = true;
+      codeBlockContent = [];
+      continue;
     }
-    if (part.startsWith("`") && part.endsWith("`")) {
-      return (
-        <code
-          key={i}
-          className="bg-slate-100 dark:bg-slate-700 text-indigo-600 dark:text-indigo-400 px-1.5 py-0.5 mx-1 rounded font-mono text-sm md:text-base border border-slate-200 dark:border-slate-600"
+
+    // Handle code block closing
+    if (line.trim() === "```" && inCodeBlock) {
+      inCodeBlock = false;
+      result.push(
+        <pre
+          key={`code-${codeBlockKey++}`}
+          className="bg-slate-900 dark:bg-slate-950 text-white p-4 md:p-6 rounded-xl overflow-x-auto font-mono text-sm md:text-base my-4 border border-slate-700 dark:border-slate-800"
         >
-          {part.slice(1, -1)}
-        </code>
+          <code>{codeBlockContent.join("\n")}</code>
+        </pre>
+      );
+      continue;
+    }
+
+    // Handle code block content
+    if (inCodeBlock) {
+      codeBlockContent.push(line);
+      continue;
+    }
+
+    // Handle ## headings
+    if (line.startsWith("## ")) {
+      result.push(
+        <h2
+          key={`heading-${headingKey++}`}
+          className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white mt-6 mb-3"
+        >
+          {processInline(line.slice(3))}
+        </h2>
+      );
+      continue;
+    }
+
+    // Handle regular text lines
+    if (line.trim() === "") {
+      result.push(<div key={`blank-${textKey++}`} className="h-3" />);
+    } else {
+      result.push(
+        <p key={`para-${textKey++}`} className="mb-2">
+          {processInline(line)}
+        </p>
       );
     }
-    return (
-      <span key={i} className="whitespace-pre-wrap">
-        {part}
-      </span>
+  }
+
+  // Handle unclosed code block (render what we have)
+  if (inCodeBlock && codeBlockContent.length > 0) {
+    result.push(
+      <pre
+        key={`code-${codeBlockKey++}`}
+        className="bg-slate-900 dark:bg-slate-950 text-white p-4 md:p-6 rounded-xl overflow-x-auto font-mono text-sm md:text-base my-4 border border-slate-700 dark:border-slate-800"
+      >
+        <code>{codeBlockContent.join("\n")}</code>
+      </pre>
     );
-  });
+  }
+
+  return result;
 };
 
 interface LessonViewProps {
