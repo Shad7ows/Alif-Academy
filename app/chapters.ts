@@ -13,11 +13,13 @@ import {
   Layers,
   Package,
   Map as LucideMap,
+  Trophy,
+  Star,
 } from "lucide-react";
 
-export const CHAPTERS = [
+export const CHAPTERS_L1 = [
   {
-    id: "ch1",
+    id: "l1_ch1",
     title: "الأساسيات والعمليات",
     description: "ابنِ أساسك البرمجي. تعلم المتغيرات، الحساب، وإدارة الذاكرة.",
     icon: Layers,
@@ -26,7 +28,7 @@ export const CHAPTERS = [
     textDark: "text-blue-700",
     lessons: [
       {
-        id: "l1_1",
+        id: "l1_ch1_1",
         title: "أهلاً بك في عالم ألف",
         icon: Code2,
         content:
@@ -67,7 +69,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l1_2",
+        id: "l1_ch1_2",
         title: "العمليات الحسابية",
         icon: Calculator,
         content:
@@ -102,7 +104,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l1_3",
+        id: "l1_ch1_3",
         title: "الإسناد الرجعي",
         icon: Zap,
         content:
@@ -137,7 +139,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l1_4",
+        id: "l1_ch1_4",
         title: "حذف المتغيرات",
         icon: Trash2,
         content:
@@ -184,7 +186,7 @@ export const CHAPTERS = [
     ],
   },
   {
-    id: "ch2",
+    id: "l1_ch2",
     title: "المنطق والقرارات",
     description: "علم برنامجك كيف يقارن البيانات ويتخذ قرارات ذكية معقدة.",
     icon: GitBranch,
@@ -193,7 +195,7 @@ export const CHAPTERS = [
     textDark: "text-emerald-700",
     lessons: [
       {
-        id: "l2_1",
+        id: "l1_ch2_1",
         title: "المقارنة والروابط",
         icon: Scale,
         content:
@@ -228,7 +230,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l2_2",
+        id: "l1_ch2_2",
         title: "الشروط (اذا / والا)",
         icon: GitBranch,
         content:
@@ -273,7 +275,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l2_3",
+        id: "l1_ch2_3",
         title: "الإسناد الشرطي",
         icon: ArrowRightLeft,
         content:
@@ -320,7 +322,7 @@ export const CHAPTERS = [
     ],
   },
   {
-    id: "ch3",
+    id: "l1_ch3",
     title: "الهياكل والتكرار",
     description: "نظم بياناتك في حاويات، واستخدم الحلقات لتنفيذ المهام بسرعة.",
     icon: Repeat,
@@ -329,7 +331,7 @@ export const CHAPTERS = [
     textDark: "text-amber-700",
     lessons: [
       {
-        id: "l3_1",
+        id: "l1_ch3_1",
         title: "المترابطة",
         icon: Layers,
         content:
@@ -374,7 +376,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l3_2",
+        id: "l1_ch3_2",
         title: "المصفوفة",
         icon: LayoutList,
         content:
@@ -427,7 +429,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l3_3",
+        id: "l1_ch3_3",
         title: "الفهرس",
         icon: LucideMap,
         content:
@@ -485,7 +487,7 @@ export const CHAPTERS = [
         ],
       },
        {
-        id: "l3_4",
+        id: "l1_ch3_4",
         title: "حلقة 'لكل' و 'مدى'",
         icon: Repeat,
          content:
@@ -541,7 +543,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l3_5",
+        id: "l1_ch3_5",
         title: "حلقة 'بينما'",
         icon: Zap,
         content:
@@ -606,7 +608,7 @@ export const CHAPTERS = [
     ],
   },
   {
-    id: "ch4",
+    id: "l1_ch4",
     title: "الدوال والأدوات",
     description:
       "تعرف على الدوال الجاهزة، وتعلم كيف تنشئ الدوال الخاصة بك.",
@@ -616,7 +618,7 @@ export const CHAPTERS = [
     textDark: "text-violet-700",
     lessons: [
       {
-        id: "l4_1",
+        id: "l1_ch4_1",
         title: "الدوال الضمنية",
         icon: Box,
         content:
@@ -688,7 +690,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l4_2",
+        id: "l1_ch4_2",
         title: "إنشاء الدوال الخاصة",
         icon: TerminalSquare,
         content:
@@ -771,7 +773,7 @@ export const CHAPTERS = [
     ],
   },
   {
-    id: "ch5",
+    id: "l1_ch5",
     title: "الاستيراد والمكتبات",
     description:
       "استفد من المكتبات الجاهزة لتوسيع قدرات برنامجك.",
@@ -781,7 +783,7 @@ export const CHAPTERS = [
     textDark: "text-fuchsia-700",
     lessons: [
       {
-        id: "l5_1",
+        id: "l1_ch5_1",
         title: "استيراد مكتبة كاملة",
         icon: Package,
         content:
@@ -860,7 +862,7 @@ export const CHAPTERS = [
         ],
       },
       {
-        id: "l5_2",
+        id: "l1_ch5_2",
         title: "الاستيراد المخصص",
         icon: Zap,
         content:
@@ -921,3 +923,64 @@ export const CHAPTERS = [
     ],
   },
 ];
+
+// Level definitions with metadata
+export const LEVELS = [
+  {
+    id: "l1",
+    name: "المبتدئ",
+    description: "تعلم الأساسيات والعمليات الأساسية في لغة البرمجة ألف",
+    icon: Code2,
+    color: "from-blue-500 to-indigo-600",
+    bgLight: "bg-blue-50",
+    textDark: "text-blue-700",
+    chapters: CHAPTERS_L1,
+    unlockThreshold: 0, // Always unlocked
+  },
+  {
+    id: "l2",
+    name: "المتوسط",
+    description: "عمّق فهمك وتعلم بناء برامج أكثر تعقيداً وتطوراً",
+    icon: Trophy,
+    color: "from-emerald-400 to-teal-500",
+    bgLight: "bg-emerald-50",
+    textDark: "text-emerald-700",
+    chapters: [], // Future chapters
+    unlockThreshold: 80, // 80% of l1 completion
+  },
+  {
+    id: "l3",
+    name: "المحترف",
+    description: "أتقن البرمجة وابدأ مشاريعك الخاصة باحترافية",
+    icon: Star,
+    color: "from-amber-400 to-orange-500",
+    bgLight: "bg-amber-50",
+    textDark: "text-amber-700",
+    chapters: [], // Future chapters
+    unlockThreshold: 90, // 90% of l2 completion
+  },
+];
+
+// Helper to get chapters for a specific level
+export function getChaptersForLevel(levelId: string) {
+  const level = LEVELS.find((l) => l.id === levelId);
+  return level?.chapters || [];
+}
+
+// Helper to get total lessons count for a level
+export function getLevelLessonCount(levelId: string): number {
+  const chapters = getChaptersForLevel(levelId);
+  return chapters.reduce((sum, ch) => sum + ch.lessons.length, 0);
+}
+
+// Helper to get completed lessons count for a level
+export function getLevelCompletedCount(
+  levelId: string,
+  completedLessons: string[],
+): number {
+  const chapters = getChaptersForLevel(levelId);
+  const levelLessonIds = new Set(
+    chapters.flatMap((ch) => ch.lessons.map((l) => l.id)),
+  );
+  return completedLessons.filter((id) => levelLessonIds.has(id)).length;
+}

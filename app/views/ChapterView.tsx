@@ -1,5 +1,8 @@
+"use client";
+
 import type { LucideProps } from "lucide-react";
-import { CheckCircle, ArrowLeft, PlayCircle, Lock } from "lucide-react";
+import { CheckCircle, ArrowRight, PlayCircle, Lock } from "lucide-react";
+import { LEVELS, getChaptersForLevel } from "../chapters";
 
 interface Quiz {
   question: string;
@@ -8,6 +11,7 @@ interface Quiz {
   correctAnswer: number;
   explanation: string;
 }
+
 interface Lesson {
   id: string;
   title: string;
@@ -18,21 +22,10 @@ interface Lesson {
   quizzes: Quiz[];
 }
 
-interface Chapter {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.FC<LucideProps>;
-  color: string;
-  bgLight: string;
-  textDark: string;
-  lessons: Lesson[];
-}
-
 interface ChapterViewProps {
   activeChapterIndex: number;
   userData: { completedLessons: string[]; xp: number };
-  CHAPTERS: Chapter[];
+  selectedLevel: string | null;
   startLesson: (index: number) => void;
   setView: (view: string) => void;
 }
@@ -40,11 +33,16 @@ interface ChapterViewProps {
 export const ChapterView = ({
   activeChapterIndex,
   userData,
-  CHAPTERS,
+  selectedLevel,
   startLesson,
   setView,
 }: ChapterViewProps) => {
-  const activeChapter = CHAPTERS[activeChapterIndex];
+  // Get chapters for the selected level
+  const chapters = selectedLevel
+    ? getChaptersForLevel(selectedLevel)
+    : LEVELS.flatMap((level) => getChaptersForLevel(level.id));
+
+  const activeChapter = chapters[activeChapterIndex];
 
   return (
     <div className="max-w-3xl mx-auto animate-fade-in-up pb-20">
@@ -52,8 +50,8 @@ export const ChapterView = ({
         onClick={() => setView("dashboard")}
         className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white mb-8 transition-colors font-bold group dark:text-slate-400"
       >
-        <ArrowLeft className="w-5 h-5 rotate-180 group-hover:translate-x-1 transition-transform" />
-        العودة للمسار{" "}
+        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        العودة للمسارات
       </button>
 
       <div className="bg-white dark:bg-slate-800 rounded-4xl p-8 shadow-sm border border-slate-200 dark:border-slate-700 mb-10 text-center">
@@ -80,7 +78,7 @@ export const ChapterView = ({
             const isLocked =
               idx > 0 &&
               !userData.completedLessons.includes(
-                activeChapter.lessons[idx - 1].id,
+                activeChapter.lessons[idx - 1].id
               );
             const LessonIcon = lesson.icon || PlayCircle;
 
@@ -105,8 +103,8 @@ export const ChapterView = ({
                       isLocked
                         ? "border-slate-100 dark:border-slate-700"
                         : isCompleted
-                          ? "border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500"
-                          : "border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 dark:hover:border-indigo-500"
+                        ? "border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500"
+                        : "border-indigo-200 dark:border-indigo-700 hover:border-indigo-400 dark:hover:border-indigo-500"
                     }`}
                   >
                     <div
@@ -114,8 +112,8 @@ export const ChapterView = ({
                         isCompleted
                           ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
                           : isLocked
-                            ? "bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500"
-                            : "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+                          ? "bg-slate-100 dark:bg-slate-700 text-slate-400 dark:text-slate-500"
+                          : "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
                       }`}
                     >
                       {isCompleted ? (
@@ -144,8 +142,8 @@ export const ChapterView = ({
                       isCompleted
                         ? "bg-emerald-500"
                         : isLocked
-                          ? "bg-slate-300 dark:bg-slate-500"
-                          : "bg-indigo-500 animate-pulse"
+                        ? "bg-slate-300 dark:bg-slate-500"
+                        : "bg-indigo-500 animate-pulse"
                     }`}
                   ></div>
                 </div>

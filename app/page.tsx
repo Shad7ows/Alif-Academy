@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { LevelView } from "./views/LevelView";
 import { DashboardView } from "./views/DashboardView";
 import { ChapterView } from "./views/ChapterView";
 import { LessonView } from "./views/LessonView";
@@ -13,7 +14,7 @@ import { AchievementsView } from "./views/AchievementsView";
 import { HelpView } from "./views/HelpView";
 import { AboutView } from "./views/AboutView";
 import { SideMenu } from "./components/SideMenu";
-import { CHAPTERS } from "./chapters";
+import { getChaptersForLevel } from "./chapters";
 import { TerminalSquare, Trophy, Star, Menu, Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserProgress } from "@/hooks/useUserProgress";
@@ -27,9 +28,10 @@ export default function AlifProPlatform() {
     error: progressError,
     completeLesson,
   } = useUserProgress(user?.id ?? null);
-  const [view, setView] = useState("dashboard"); // dashboard, chapter, lesson, quiz, statistics, profile, settings, achievements, help, about
+  const [view, setView] = useState("level"); // level, dashboard, chapter, lesson, quiz, statistics, profile, settings, achievements, help, about
   const [activeChapterIndex, setActiveChapterIndex] = useState(0);
   const [activeLessonIndex, setActiveLessonIndex] = useState(0);
+  const [selectedLevel, setSelectedLevel] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   // التحقق من المصادقة بعد hydration
@@ -53,7 +55,7 @@ export default function AlifProPlatform() {
       setView("chapter"); // Return to chapter timeline
       window.scrollTo(0, 0);
     },
-    [completeLesson],
+    [completeLesson]
   );
 
   // عرض حالة التحميل
@@ -99,12 +101,30 @@ export default function AlifProPlatform() {
     );
   }
 
-  const activeChapter = CHAPTERS[activeChapterIndex];
+  // Get chapters for the selected level (or default to l1)
+  const chaptersForView = selectedLevel || "l1";
+  const activeChapters = getChaptersForLevel(chaptersForView);
+  const activeChapter = activeChapters[activeChapterIndex];
   const activeLesson = activeChapter?.lessons[activeLessonIndex];
 
   // Navigation Helpers
-  const openChapter = (index: number) => {
-    setActiveChapterIndex(index);
+  // Navigate to level's dashboard
+  const openLevel = (levelId: string) => {
+    setSelectedLevel(levelId);
+    setView("dashboard");
+    window.scrollTo(0, 0);
+  };
+
+  // Navigate back to levels page
+  const backToLevels = () => {
+    setView("level");
+    setSelectedLevel(null);
+    window.scrollTo(0, 0);
+  };
+
+  // Open chapter from dashboard (level-scoped)
+  const openChapter = (chapterIndex: number) => {
+    setActiveChapterIndex(chapterIndex);
     setView("chapter");
     window.scrollTo(0, 0);
   };
@@ -137,7 +157,9 @@ export default function AlifProPlatform() {
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div
             className="flex items-center gap-3 cursor-pointer"
-            onClick={() => setView("dashboard")}
+            onClick={() =>
+              view === "level" ? backToLevels() : setView("level")
+            }
           >
             <button
               onClick={(e) => {
@@ -189,14 +211,25 @@ export default function AlifProPlatform() {
         </div>
       </header>
       <main className="px-6">
+        {/* Level View - Main landing page */}
+        {view === "level" && (
+          <LevelView userData={userData} openLevel={openLevel} />
+        )}
+
+        {/* Dashboard View - Shows chapters for selected level */}
         {view === "dashboard" && (
-          <DashboardView userData={userData} openChapter={openChapter} />
+          <DashboardView
+            userData={userData}
+            selectedLevel={selectedLevel}
+            openChapter={openChapter}
+            onBackToLevels={backToLevels}
+          />
         )}
         {view === "chapter" && (
           <ChapterView
             activeChapterIndex={activeChapterIndex}
             userData={userData}
-            CHAPTERS={CHAPTERS}
+            selectedLevel={selectedLevel}
             startLesson={startLesson}
             setView={setView}
           />

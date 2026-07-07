@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { CHAPTERS } from "@/chapters";
+import { LEVELS, getChaptersForLevel } from "@/chapters";
 import {
   User,
   Mail,
@@ -32,8 +32,11 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
   const { user } = useAuth();
   const supabase = createClient();
 
-  // Calculate total lessons from CHAPTERS
-  const totalLessons = CHAPTERS.reduce((acc, ch) => acc + ch.lessons.length, 0);
+  // Calculate total lessons from all levels
+  const totalLessons = LEVELS.reduce(
+    (acc, level) => acc + getChaptersForLevel(level.id).length,
+    0
+  );
 
   // Profile editing state
   const [isEditingName, setIsEditingName] = useState(false);

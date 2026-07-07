@@ -1,6 +1,6 @@
 "use client";
 
-import { CHAPTERS } from "../chapters";
+import { LEVELS, getChaptersForLevel } from "../chapters";
 import {
   Star,
   Trophy,
@@ -21,8 +21,17 @@ interface StatisticsViewProps {
 }
 
 export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
+  // Get all chapters from all levels
+  const allChapters = useMemo(
+    () => LEVELS.flatMap((level) => getChaptersForLevel(level.id)),
+    []
+  );
+
   // Calculate total lessons
-  const totalLessons = CHAPTERS.reduce((acc, ch) => acc + ch.lessons.length, 0);
+  const totalLessons = allChapters.reduce(
+    (acc, ch) => acc + ch.lessons.length,
+    0
+  );
 
   // Overall statistics
   const stats = useMemo(
@@ -31,8 +40,9 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
       completedLessons: userData.completedLessons.length,
       xp: userData.xp,
       progressPercentage:
-        Math.round((userData.completedLessons.length / totalLessons) * 100) ||
-        0,
+        totalLessons > 0
+          ? Math.round((userData.completedLessons.length / totalLessons) * 100)
+          : 0,
       remainingLessons: totalLessons - userData.completedLessons.length,
     }),
     [totalLessons, userData.completedLessons, userData.xp]
@@ -40,7 +50,7 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
 
   // Chapter-wise statistics
   const chapterStats = useMemo(() => {
-    return CHAPTERS.map((chapter) => {
+    return allChapters.map((chapter) => {
       const completed = chapter.lessons.filter((l) =>
         userData.completedLessons.includes(l.id)
       ).length;
@@ -59,11 +69,11 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
         percentage,
       };
     });
-  }, [userData.completedLessons]);
+  }, [userData.completedLessons, allChapters]);
 
   // Lesson completion details per chapter
   const lessonDetails = useMemo(() => {
-    return CHAPTERS.map((chapter) => {
+    return allChapters.map((chapter) => {
       const lessons = chapter.lessons.map((lesson) => ({
         id: lesson.id,
         title: lesson.title,
@@ -76,7 +86,7 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
         lessons,
       };
     });
-  }, [userData.completedLessons]);
+  }, [userData.completedLessons, allChapters]);
 
   // Streak calculation (mock - since we don't have date tracking in detail)
   const currentStreak = useMemo(() => {
