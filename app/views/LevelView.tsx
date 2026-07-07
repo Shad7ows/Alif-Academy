@@ -40,7 +40,7 @@ function getUnlockMessage(levelId: string, completedLessons: string[]): string {
     totalLessons > 0 ? Math.round((completed / totalLessons) * 100) : 0;
 
   const threshold = LEVELS.find((l) => l.id === levelId)?.unlockThreshold || 0;
-  const remaining = threshold - percentage;
+  const remaining = threshold - percentage >= 0 ? threshold - percentage : 0;
 
   return `يتطلب إكمال ${remaining}% من المستوى السابق`;
 }
@@ -50,6 +50,9 @@ function getUnlockMessage(levelId: string, completedLessons: string[]): string {
  */
 function isLevelUnlocked(levelId: string, completedLessons: string[]): boolean {
   if (levelId === "l1") return true;
+
+  // delete to open levels 2 nad 3
+  if (levelId === "l2" || levelId === "l3") return false; // لفتح قفل المستوى الثاني والثالث فقط قم بحذف هذا السطر
 
   const prevLevelId = levelId === "l2" ? "l1" : "l2";
   const prevLevelThreshold =
@@ -156,11 +159,11 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
     <div className="max-w-7xl mx-auto animate-fade-in pb-20">
       {/* عنوان الصفحة */}
       <div className="text-center mb-12">
-        <h2 className="text-2xl md:text-5xl font-black dark:text-white text-slate-800 mb-4">
-          اختر مستواك في البرمجة 🚀
+        <h2 className="text-2xl md:text-4xl font-black dark:text-white text-slate-800 mb-4">
+          هنا تبدأ رحلتك في عالم البرمجة العربية 🚀
         </h2>
         <p className="text-slate-500 dark:text-slate-400 text-sm md:text-xl max-w-2xl mx-auto">
-          ابدأ رحلتك خطوة بخطوة من المبتدئ إلى المحترف
+          الرحلة تبدأ هنا ولكنها لا تنتهي في هذا المكان
         </p>
       </div>
 
