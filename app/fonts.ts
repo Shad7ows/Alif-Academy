@@ -7,8 +7,8 @@ export const tajawal = localFont({
       path: "./assets/fonts/Tajawal/Tajawal-Regular.ttf",
       weight: "400",
       style: "normal",
-    },
-    {
+  },
+  {
       path: "./assets/fonts/Tajawal/Tajawal-Medium.ttf",
       weight: "500",
       style: "normal",
@@ -41,6 +41,12 @@ export const tajawal = localFont({
   ],
   variable: "--font-tajawal",
   display: "swap",
+  declarations: [
+    {
+      prop: 'ascent-override',
+      value: '105%',
+    },
+  ],
 });
 
 // NotoKufiArabic font for code blocks (Arabic monospace-style)

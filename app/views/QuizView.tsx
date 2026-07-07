@@ -90,7 +90,7 @@ export const QuizView = ({
         </div>
 
         {/* Question */}
-        <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-800 dark:text-white leading-tight">
+        <h2 className="text-2xl md:text-4xl font-black mb-8 text-slate-800 dark:text-white leading-tight">
           {currentQuiz.question}
         </h2>
         {currentQuiz.code && (

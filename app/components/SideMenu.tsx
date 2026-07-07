@@ -183,7 +183,7 @@ export function SideMenu({
             {/* Stats Row */}
             <div className="flex items-center justify-between mt-4 pt-4 border-t border-slate-100 dark:border-slate-600">
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 px-3 py-1.5 rounded-lg">
+                <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/30 px-1.5 py-1.5 rounded-lg">
                   <Star className="w-4 h-4 text-amber-500 dark:text-amber-400 fill-amber-500 dark:fill-amber-400" />
                   <span className="font-bold text-amber-700 dark:text-amber-300 text-sm">
                     {xp} نقطة

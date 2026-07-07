@@ -9,6 +9,7 @@ import {
   Copy,
   Check as CheckIcon,
   Clock,
+  Trophy,
 } from "lucide-react";
 import {
   LEVELS,
@@ -61,7 +62,7 @@ function isLevelUnlocked(levelId: string, completedLessons: string[]): boolean {
   const prevLevelTotal = getLevelLessonCount(prevLevelId);
   const prevLevelCompleted = getLevelCompletedCount(
     prevLevelId,
-    completedLessons
+    completedLessons,
   );
 
   if (prevLevelTotal === 0) return false;
@@ -76,12 +77,12 @@ function isLevelUnlocked(levelId: string, completedLessons: string[]): boolean {
 function calculateLevelProgress(levelId: string, completedLessons: string[]) {
   const chapters = getChaptersForLevel(levelId);
   const levelLessonIds = new Set(
-    chapters.flatMap((ch) => ch.lessons.map((l) => l.id))
+    chapters.flatMap((ch) => ch.lessons.map((l) => l.id)),
   );
 
   const total = levelLessonIds.size;
   const completed = completedLessons.filter((id) =>
-    levelLessonIds.has(id)
+    levelLessonIds.has(id),
   ).length;
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -93,16 +94,32 @@ function calculateLevelProgress(levelId: string, completedLessons: string[]) {
  */
 function getNextLesson(
   levelId: string,
-  completedLessons: string[]
+  completedLessons: string[],
 ): { id: string; title: string } | null {
   const chapters = getChaptersForLevel(levelId);
   const allLessons = chapters.flatMap((ch) => ch.lessons);
 
   // Find first lesson that hasn't been completed
   const firstLesson = allLessons.find(
-    (l: { id: string; title: string }) => !completedLessons.includes(l.id)
+    (l: { id: string; title: string }) => !completedLessons.includes(l.id),
   );
-  return firstLesson || allLessons[0] || null;
+  return firstLesson || null;
+}
+
+/**
+ * Check if all lessons across all levels are completed
+ */
+function areAllLessonsCompleted(completedLessons: string[]): boolean {
+  const allChapters = LEVELS.flatMap((level) => getChaptersForLevel(level.id));
+  const allLessons = allChapters.flatMap((ch) => ch.lessons);
+  const totalLessons = allLessons.length;
+
+  // Count unique completed lessons that exist in the curriculum
+  const validCompletedLessons = completedLessons.filter((id) =>
+    allLessons.some((l) => l.id === id),
+  );
+
+  return validCompletedLessons.length >= totalLessons && totalLessons > 0;
 }
 
 export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
@@ -110,23 +127,26 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
 
   // Calculate progress for each level
   const levelProgress = LEVELS.map((level) =>
-    calculateLevelProgress(level.id, completedLessons)
+    calculateLevelProgress(level.id, completedLessons),
   );
 
   // Check unlock status for each level
   const levelUnlocked = LEVELS.map((level) =>
-    isLevelUnlocked(level.id, completedLessons)
+    isLevelUnlocked(level.id, completedLessons),
   );
 
   // Get unlock messages
   const unlockMessages = LEVELS.map((level) =>
-    getUnlockMessage(level.id, completedLessons)
+    getUnlockMessage(level.id, completedLessons),
   );
 
   // Get next lesson for the first unlocked level
   const firstUnlockedLevelId =
     LEVELS.find((_, i) => levelUnlocked[i])?.id || "l1";
   const nextLesson = getNextLesson(firstUnlockedLevelId, completedLessons);
+
+  // Check if all lessons are completed
+  const allCompleted = areAllLessonsCompleted(completedLessons);
 
   // Get last completed lesson from all levels
   const allChapters = LEVELS.flatMap((level) => getChaptersForLevel(level.id));
@@ -135,7 +155,7 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
     [...allLessons]
       .reverse()
       .find((l: { id: string; title: string }) =>
-        completedLessons.includes(l.id)
+        completedLessons.includes(l.id),
       ) || null;
 
   // Daily tip
@@ -160,7 +180,7 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
       {/* عنوان الصفحة */}
       <div className="text-center mb-12">
         <h2 className="text-2xl md:text-4xl font-black dark:text-white text-slate-800 mb-4">
-          هنا تبدأ رحلتك في عالم البرمجة العربية 🚀
+          هنا تبدأ رحلتك في عالم البرمجة بالعربية 🚀
         </h2>
         <p className="text-slate-500 dark:text-slate-400 text-sm md:text-xl max-w-2xl mx-auto">
           الرحلة تبدأ هنا ولكنها لا تنتهي في هذا المكان
@@ -281,8 +301,8 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
 
       {/* بطاقة الإكمال والنصيحة اليومية */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* بطاقة أكمل تعلمك */}
-        {nextLesson && (
+        {/* بطاقة أكمل تعلمك أو رسالة التهنئة */}
+        {!allCompleted && nextLesson && (
           <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
             <div className="flex items-center gap-3 mb-5">
               <div className="bg-emerald-100 dark:bg-emerald-900/30 p-3 rounded-2xl">
@@ -314,6 +334,24 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
                 أكمل الآن
                 <ArrowLeft className="w-5 h-5" />
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* رسالة مبروك عند إكمال جميع الدروس */}
+        {allCompleted && (
+          <div className="bg-linear-to-br from-emerald-500 to-teal-600 rounded-3xl p-8 shadow-lg border border-emerald-400 dark:border-emerald-500">
+            <div className="flex flex-col items-center text-center gap-4">
+              <div className="bg-white/20 p-4 rounded-full">
+                <Trophy className="w-12 h-12 text-white" />
+              </div>
+              <h3 className="text-2xl font-black text-white">🎉 مبروك!</h3>
+              <p className="text-white/90 text-lg font-bold">
+                لقد أتممت جميع الدروس!
+              </p>
+              <p className="text-white/80 text-sm">
+                أنت بطل حقيقي في عالم البرمجة
+              </p>
             </div>
           </div>
         )}
