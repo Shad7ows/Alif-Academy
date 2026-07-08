@@ -111,13 +111,13 @@ export const AlifIDE = ({
       dir="rtl"
     >
       <div className="bg-slate-800 px-4 py-3 flex items-center justify-between border-b border-slate-700">
+        <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2">
+          <Code2 className="w-4 h-4" /> ملف.الف
+        </div>
         <div className="flex gap-2">
           <div className="w-3 h-3 rounded-full bg-rose-500"></div>
           <div className="w-3 h-3 rounded-full bg-amber-500"></div>
           <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
-        </div>
-        <div className="text-slate-400 text-xs tracking-wider flex items-center gap-2">
-          <Code2 className="w-4 h-4" /> main.alif
         </div>
       </div>
 
@@ -139,10 +139,10 @@ export const AlifIDE = ({
           <button
             onClick={handleRun}
             disabled={isRunning}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg font-bold text-sm transition-all ${
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all ${
               isRunning
                 ? "bg-slate-700 text-slate-400 cursor-not-allowed"
-                : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-900/50"
+                : "bg-emerald-500 hover:bg-emerald-400 text-white shadow-lg shadow-emerald-700/75 hover:shadow-emerald-600/90"
             }`}
           >
             {isRunning ? (
