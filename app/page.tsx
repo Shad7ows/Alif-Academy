@@ -251,28 +251,22 @@ export default function AlifProPlatform() {
           />
         )}
         {view === "statistics" && (
-          <StatisticsView
-            userData={userData}
-            onBack={() => setView("dashboard")}
-          />
+          <StatisticsView userData={userData} onBack={() => setView("level")} />
         )}
         {view === "profile" && (
-          <ProfileView
-            userData={userData}
-            onBack={() => setView("dashboard")}
-          />
+          <ProfileView userData={userData} onBack={() => setView("level")} />
         )}
         {view === "achievements" && (
           <AchievementsView
             userData={userData}
-            onBack={() => setView("dashboard")}
+            onBack={() => setView("level")}
           />
         )}
         {view === "settings" && (
-          <SettingsView onBack={() => setView("dashboard")} />
+          <SettingsView onBack={() => setView("level")} />
         )}
-        {view === "help" && <HelpView onBack={() => setView("dashboard")} />}
-        {view === "about" && <AboutView onBack={() => setView("dashboard")} />}
+        {view === "help" && <HelpView onBack={() => setView("level")} />}
+        {view === "about" && <AboutView onBack={() => setView("level")} />}
       </main>
     </div>
   );

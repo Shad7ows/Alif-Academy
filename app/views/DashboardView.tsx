@@ -102,11 +102,11 @@ export const DashboardView = ({
             </div>
             <div className="relative z-10 flex gap-4">
               <div className="bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 px-6 py-4 rounded-2xl flex flex-col items-center">
-                <Star className="text-amber-500 dark:text-amber-400 w-8 h-8 mb-1 fill-amber-500 dark:fill-amber-400" />
-                <span className="text-2xl font-black text-amber-600 dark:text-amber-300">
+                <Star className="text-orange-500 dark:text-orange-300 w-8 h-8 mb-1 fill-orange-500 dark:fill-orange-300" />
+                <span className="text-2xl font-black text-orange-500 dark:text-orange-300">
                   {userData.xp}
                 </span>
-                <span className="text-amber-600/90 dark:text-amber-400/80 text-base font-bold">
+                <span className="text-orange-500/90 dark:text-orange-300/80 text-base font-bold">
                   نقطة خبرة
                 </span>
               </div>

@@ -198,7 +198,7 @@ export const LessonView = ({
 
       <button
         onClick={onComplete}
-        className="w-full bg-slate-900 dark:bg-slate-950 hover:bg-black dark:hover:bg-slate-800 text-white p-5 rounded-2xl text-xl font-bold transition-all shadow-xl shadow-slate-900/20 dark:shadow-slate-950/40 flex items-center justify-center gap-3 hover:-translate-y-1"
+        className="w-full bg-slate-900 dark:bg-slate-950 hover:bg-black dark:hover:bg-indigo-900 text-white p-5 rounded-2xl text-xl font-bold transition-all shadow-xl shadow-slate-900/20 dark:shadow-slate-950/40 flex items-center justify-center gap-3 hover:-translate-y-1"
       >
         استمرار إلى التحدي <ChevronRight className="w-6 h-6 rotate-180" />
       </button>
