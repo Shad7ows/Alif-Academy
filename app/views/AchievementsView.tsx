@@ -32,12 +32,23 @@ interface Achievement {
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
-  category: "lessons" | "xp" | "milestone";
+  category: "lessons" | "xp" | "combined";
   requirement: number;
   getValue(userData: { completedLessons: string[]; xp: number }): number;
   color: string;
   bgLight: string;
   borderColor: string;
+  // Optional properties for combined achievements with progress tracking
+  progressValue?: (userData: {
+    completedLessons: string[];
+    xp: number;
+  }) => number;
+  targetValue?: number;
+  secondaryProgressValue?: (userData: {
+    completedLessons: string[];
+    xp: number;
+  }) => number;
+  secondaryTargetValue?: number;
 }
 
 const ACHIEVEMENTS: Achievement[] = [
@@ -169,9 +180,11 @@ const ACHIEVEMENTS: Achievement[] = [
     title: "على النار 🔥",
     description: "أكمل 3 دروس على الأقل",
     icon: Flame,
-    category: "milestone",
+    category: "combined",
     requirement: 3,
-    getValue: (data) => data.completedLessons.length,
+    getValue: (data) => Math.min((data.completedLessons.length / 3) * 100, 100),
+    progressValue: (data) => data.completedLessons.length,
+    targetValue: 3,
     color: "text-red-600 dark:text-red-400",
     bgLight: "bg-red-50 dark:bg-red-900/20",
     borderColor: "border-red-200 dark:border-red-700",
@@ -179,17 +192,20 @@ const ACHIEVEMENTS: Achievement[] = [
   {
     id: "speed-learner",
     title: "متعلم سريع ⚡",
-    description: "أكمل 10 دروس واجمع 250 نقطة خبرة",
+    description: "أكمل 10 دروس او اجمع 1500 نقطة خبرة",
     icon: Rocket,
-    category: "milestone",
+    category: "combined",
     requirement: 10,
     getValue: (data) => {
-      // Special check: both conditions must be met
-      if (data.completedLessons.length >= 10 && data.xp >= 250) {
-        return 1;
-      }
-      return 0;
+      // Calculate progress as the maximum percentage of both conditions
+      const lessonsProgress = (data.completedLessons.length / 10) * 100;
+      const xpProgress = (data.xp / 1500) * 100;
+      return Math.max(lessonsProgress, xpProgress);
     },
+    progressValue: (data) => data.completedLessons.length,
+    targetValue: 10,
+    secondaryProgressValue: (data) => data.xp,
+    secondaryTargetValue: 1500,
     color: "text-sky-600 dark:text-sky-400",
     bgLight: "bg-sky-50 dark:bg-sky-900/20",
     borderColor: "border-sky-200 dark:border-sky-700",
@@ -197,16 +213,20 @@ const ACHIEVEMENTS: Achievement[] = [
   {
     id: "diamond-student",
     title: "طالب ألماسي 💎",
-    description: "أكمل 20 درس واجمع 1000 نقطة خبرة",
+    description: "أكمل 20 درس او اجمع 3000 نقطة خبرة",
     icon: Gem,
-    category: "milestone",
+    category: "combined",
     requirement: 20,
     getValue: (data) => {
-      if (data.completedLessons.length >= 20 && data.xp >= 1000) {
-        return 1;
-      }
-      return 0;
+      // Calculate progress as the maximum percentage of both conditions
+      const lessonsProgress = (data.completedLessons.length / 20) * 100;
+      const xpProgress = (data.xp / 3000) * 100;
+      return Math.max(lessonsProgress, xpProgress);
     },
+    progressValue: (data) => data.completedLessons.length,
+    targetValue: 20,
+    secondaryProgressValue: (data) => data.xp,
+    secondaryTargetValue: 3000,
     color: "text-cyan-600 dark:text-cyan-400",
     bgLight: "bg-cyan-50 dark:bg-cyan-900/20",
     borderColor: "border-cyan-200 dark:border-cyan-700",
@@ -216,9 +236,15 @@ const ACHIEVEMENTS: Achievement[] = [
     title: "عشرة كاملة",
     description: "أكمل 10 دروس بالضبط",
     icon: Target,
-    category: "milestone",
+    category: "combined",
     requirement: 10,
-    getValue: (data) => (data.completedLessons.length === 10 ? 1 : 0),
+    getValue: (data) => {
+      // Show progress towards 10, then cap at 100%
+      const progress = (data.completedLessons.length / 10) * 100;
+      return data.completedLessons.length >= 10 ? 100 : Math.min(progress, 100);
+    },
+    progressValue: (data) => data.completedLessons.length,
+    targetValue: 10,
     color: "text-emerald-600 dark:text-emerald-400",
     bgLight: "bg-emerald-50 dark:bg-emerald-900/20",
     borderColor: "border-emerald-200 dark:border-emerald-700",
@@ -232,29 +258,39 @@ export const AchievementsView = ({
   // Calculate achievement progress
   const achievementStatuses = useMemo(() => {
     return ACHIEVEMENTS.map((achievement) => {
-      const currentValue = achievement.getValue(userData);
-      const progress =
-        achievement.category === "milestone"
-          ? currentValue >= 1
-            ? 100
-            : 0
-          : Math.min((currentValue / achievement.requirement) * 100, 100);
+      const progressPercentage = achievement.getValue(userData);
 
-      const isUnlocked =
-        achievement.category === "milestone"
-          ? currentValue >= 1
-          : currentValue >= achievement.requirement;
+      // For combined achievements, getValue now returns a percentage (0-100)
+      const progress =
+        achievement.category === "combined"
+          ? Math.min(progressPercentage, 100)
+          : Math.min((progressPercentage / achievement.requirement) * 100, 100);
+
+      // An achievement is unlocked when progress reaches 100%
+      const isUnlocked = progress >= 100;
+
+      // Get the raw current value for display
+      let currentValue: number;
+      let displayRequirement: number;
+
+      if (
+        achievement.category === "combined" &&
+        achievement.progressValue &&
+        achievement.targetValue
+      ) {
+        currentValue = achievement.progressValue(userData);
+        displayRequirement = achievement.targetValue;
+      } else {
+        currentValue = progressPercentage;
+        displayRequirement = achievement.requirement;
+      }
 
       return {
         achievement,
-        currentValue:
-          achievement.category === "milestone"
-            ? currentValue >= 1
-              ? currentValue
-              : 0
-            : currentValue,
+        currentValue,
         progress,
         isUnlocked,
+        displayRequirement,
       };
     });
   }, [userData]);
@@ -281,7 +317,7 @@ export const AchievementsView = ({
     const groups = {
       lessons: [] as typeof achievementStatuses,
       xp: [] as typeof achievementStatuses,
-      milestone: [] as typeof achievementStatuses,
+      combined: [] as typeof achievementStatuses,
     };
 
     achievementStatuses.forEach((status) => {
@@ -297,7 +333,7 @@ export const AchievementsView = ({
         return "إنجازات إكمال الدروس";
       case "xp":
         return "إنجازات نقاط الخبرة";
-      case "milestone":
+      case "combined":
         return "الإنجازات الخاصة";
       default:
         return "";
@@ -310,7 +346,7 @@ export const AchievementsView = ({
         return BookOpen;
       case "xp":
         return Star;
-      case "milestone":
+      case "combined":
         return Award;
       default:
         return Trophy;
@@ -421,7 +457,12 @@ export const AchievementsView = ({
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {stats.nextAchievements.map((status) => {
-              const { achievement, currentValue, progress } = status;
+              const {
+                achievement,
+                currentValue,
+                progress,
+                displayRequirement,
+              } = status;
               const Icon = achievement.icon;
               return (
                 <div
@@ -446,7 +487,7 @@ export const AchievementsView = ({
                       {Math.round(progress)}%
                     </span>
                     <span className="font-bold text-slate-600 dark:text-slate-300">
-                      {currentValue}/{achievement.requirement}
+                      {Math.round(currentValue)}/{displayRequirement}
                     </span>
                   </div>
                   <div className="w-full bg-white/50 dark:bg-slate-600/50 h-2 rounded-full overflow-hidden">
@@ -483,8 +524,13 @@ export const AchievementsView = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {statuses.map((status) => {
-                  const { achievement, currentValue, progress, isUnlocked } =
-                    status;
+                  const {
+                    achievement,
+                    currentValue,
+                    progress,
+                    isUnlocked,
+                    displayRequirement,
+                  } = status;
                   const Icon = achievement.icon;
 
                   return (
@@ -546,7 +592,8 @@ export const AchievementsView = ({
                                   {Math.round(progress)}%
                                 </span>
                                 <span className="font-bold text-slate-600 dark:text-slate-300">
-                                  {currentValue}/{achievement.requirement}
+                                  {Math.round(currentValue)}/
+                                  {displayRequirement}
                                 </span>
                               </div>
                               <div className="w-full bg-slate-200 dark:bg-slate-600 h-2 rounded-full overflow-hidden">
