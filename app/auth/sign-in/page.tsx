@@ -22,6 +22,7 @@ export default function SignInPage() {
     signInWithGoogle,
     signInWithGitHub,
     signInWithEmail,
+    checkEmailExists,
   } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +49,14 @@ export default function SignInPage() {
 
     setSubmitting(true);
     try {
+      // Check if email exists in the database before signing in
+      const exists = await checkEmailExists(email);
+      if (!exists) {
+        setFormError("المستخدم غير مسجل");
+        setSubmitting(false);
+        return;
+      }
+
       await signInWithEmail(email, password);
     } catch (e: unknown) {
       // Check error code (stable) and status code as fallback

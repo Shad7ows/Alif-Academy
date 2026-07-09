@@ -94,36 +94,44 @@ export function useAuth() {
   );
 
   // ── Helper: Check email via Edge Function ─────────────────────────────
-  const checkEmailExists = useCallback(async (email: string): Promise<boolean> => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/check-email`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
-      );
-      
-      if (!response.ok) return false;
-      
-      const { exists } = await response.json();
-      return exists;
-    } catch {
-      return false; // Fail-safe: افترض أنه غير موجود
-    }
-  }, []);
+  const checkEmailExists = useCallback(
+    async (email: string): Promise<boolean> => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/check-email`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+          }
+        );
+
+        if (!response.ok) return false;
+
+        const { exists } = await response.json();
+        return exists;
+      } catch {
+        return false; // Fail-safe: افترض أنه غير موجود
+      }
+    },
+    []
+  );
 
   // ── Sign Up with Pre-check ─────────────────────────────────────────────
   const signUpWithEmail = useCallback(
-    async (fullName: string, age: number | "", email: string, password: string) => {
+    async (
+      fullName: string,
+      age: number | "",
+      email: string,
+      password: string
+    ) => {
       setError(null);
       setLoading(true);
 
       try {
         // الخطوة 1: التحقق من وجود البريد
         const exists = await checkEmailExists(email);
-        
+
         if (exists) {
           throw new Error(
             "هذا البريد الإلكتروني مسجل مسبقاً. يرجى تسجيل الدخول أو استعادة كلمة المرور."
@@ -135,7 +143,7 @@ export function useAuth() {
           email,
           password,
           options: {
-            data: { 
+            data: {
               full_name: fullName,
               age: age !== "" ? age : null,
             },
@@ -149,7 +157,6 @@ export function useAuth() {
           success: true,
           message: "تم إرسال بريد التأكيد. يرجى التحقق من بريدك الإلكتروني.",
         };
-
       } catch (e: unknown) {
         const message = e instanceof Error ? e : "فشل إنشاء الحساب";
         throw message;
@@ -182,5 +189,6 @@ export function useAuth() {
     signInWithEmail,
     signUpWithEmail,
     signOut,
+    checkEmailExists,
   };
 }
