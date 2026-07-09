@@ -43,7 +43,11 @@ function buildProgressEntries(
 
 function aggregateProgress(
   data: UserProgress[],
-  profile?: { streak: number; longest_streak: number; last_active_date: string | null }
+  profile?: {
+    streak: number;
+    longest_streak: number;
+    last_active_date: string | null;
+  }
 ): UserData {
   return {
     completedLessons: data.map((p) => p.lesson_id),
@@ -97,22 +101,20 @@ export function useUserProgress(userId: string | null) {
 
         if (fetchError) throw fetchError;
 
-        // 2. Fetch profile data (streak, last_active_date)
-        // Note: longest_streak will be added to the database schema manually
+        // 2. Fetch profile data (streak, longest_streak, last_active_date)
         const { data: rawProfileData, error: profileError } = await supabase
           .from("profiles")
-          .select("streak, last_active_date")
+          .select("streak, longest_streak, last_active_date")
           .eq("id", userId)
           .single();
 
         if (profileError) throw profileError;
 
         const serverData = (progressData as UserProgress[]) || [];
-        // Cast to include longest_streak (will be 0 until column is added)
         const profileData = {
-          streak: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.streak ?? 0,
-          longest_streak: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.longest_streak ?? 0,
-          last_active_date: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.last_active_date ?? null,
+          streak: rawProfileData?.streak ?? 0,
+          longest_streak: rawProfileData?.longest_streak ?? 0,
+          last_active_date: rawProfileData?.last_active_date ?? null,
         };
         let currentData = aggregateProgress(serverData, profileData);
 
@@ -146,14 +148,15 @@ export function useUserProgress(userId: string | null) {
 
                 const mergedProfileData = await supabase
                   .from("profiles")
-                  .select("streak, last_active_date")
+                  .select("streak, longest_streak, last_active_date")
                   .eq("id", userId)
                   .single();
 
                 const mergedProfile = {
-                  streak: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.streak ?? 0,
-                  longest_streak: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.longest_streak ?? 0,
-                  last_active_date: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.last_active_date ?? null,
+                  streak: mergedProfileData.data?.streak ?? 0,
+                  longest_streak: mergedProfileData.data?.longest_streak ?? 0,
+                  last_active_date:
+                    mergedProfileData.data?.last_active_date ?? null,
                 };
                 const mergedData = (merged as UserProgress[]) || [];
                 currentData = aggregateProgress(mergedData, mergedProfile);
@@ -193,10 +196,18 @@ export function useUserProgress(userId: string | null) {
       const previousData = { ...userData };
       const hasNewLesson = !userData.completedLessons.includes(lessonId);
 
-      // Calculate new streak using the pure function
-      const newStreak = hasNewLesson
-        ? calculateStreak(userData.currentStreak, userData.lastActiveDate)
-        : userData.currentStreak;
+      // Calculate new streak + longestStreak using the pure function
+      const { streak: newStreak, longestStreak: newLongestStreak } =
+        hasNewLesson
+          ? calculateStreak(
+              userData.currentStreak,
+              userData.lastActiveDate,
+              userData.longestStreak
+            )
+          : {
+              streak: userData.currentStreak,
+              longestStreak: userData.longestStreak,
+            };
 
       // Optimistic update
       setUserData((prev) => ({
@@ -209,28 +220,32 @@ export function useUserProgress(userId: string | null) {
         lastActiveDate: hasNewLesson
           ? new Date().toISOString().split("T")[0]
           : prev.lastActiveDate,
+        longestStreak: newLongestStreak,
       }));
 
       try {
         // Save user_progress
-        const { error: progressError } = await supabase.from("user_progress").upsert(
-          {
-            user_id: userId,
-            lesson_id: lessonId,
-            completed_at: new Date().toISOString(),
-            quiz_score: score,
-            attempts: 1,
-          },
-          { onConflict: "user_id,lesson_id" }
-        );
+        const { error: progressError } = await supabase
+          .from("user_progress")
+          .upsert(
+            {
+              user_id: userId,
+              lesson_id: lessonId,
+              completed_at: new Date().toISOString(),
+              quiz_score: score,
+              attempts: 1,
+            },
+            { onConflict: "user_id,lesson_id" }
+          );
 
         if (progressError) throw progressError;
 
-        // Update profile streak (last_active_date will be updated manually below)
+        // Update profile streak + longest_streak
         const { error: profileError } = await supabase
           .from("profiles")
           .update({
             streak: newStreak,
+            longest_streak: newLongestStreak,
             last_active_date: new Date().toISOString(),
           })
           .eq("id", userId);
