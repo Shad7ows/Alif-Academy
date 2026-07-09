@@ -16,6 +16,9 @@ interface StatisticsViewProps {
   userData: {
     completedLessons: string[];
     xp: number;
+    currentStreak: number;
+    lastActiveDate: string | null;
+    longestStreak: number;
   };
   onBack: () => void;
 }
@@ -88,11 +91,8 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
     });
   }, [userData.completedLessons, allChapters]);
 
-  // Streak calculation (mock - since we don't have date tracking in detail)
-  const currentStreak = useMemo(() => {
-    // Simple mock: calculate based on completed lessons
-    return Math.min(stats.completedLessons * 2, 30);
-  }, [stats.completedLessons]);
+  // Streak is now loaded directly from userData (fetched from profiles table)
+  const currentStreak = userData.currentStreak;
 
   return (
     <div className="max-w-5xl mx-auto animate-fade-in pb-20">
@@ -137,7 +137,17 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <TrendingUp className="w-6 h-6 mx-auto mb-2 text-sky-400" />
             <p className="text-2xl font-black">{currentStreak}</p>
-            <p className="text-indigo-100 text-xs">سلسلة الأيام</p>
+            <p className="text-indigo-100 text-xs">
+              سلسلة الأيام
+              {/* {userData.lastActiveDate && (
+                <span className="text-xs opacity-70 block mt-1">
+                  آخر نشاط:{" "}
+                  {new Date(userData.lastActiveDate).toLocaleDateString(
+                    "ar-SA"
+                  )}
+                </span>
+              )} */}
+            </p>
           </div>
         </div>
       </div>

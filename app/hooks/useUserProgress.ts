@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { UserProgress, UserData } from "@/types/database";
+import { calculateStreak } from "@/utils/calculateStreak";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -40,10 +41,18 @@ function buildProgressEntries(
   }));
 }
 
-function aggregateProgress(data: UserProgress[]): UserData {
+function aggregateProgress(
+  data: UserProgress[],
+  profile?: { streak: number; longest_streak: number; last_active_date: string | null }
+): UserData {
   return {
     completedLessons: data.map((p) => p.lesson_id),
     xp: data.reduce((sum, p) => sum + (p.quiz_score || 0), 0),
+    currentStreak: profile?.streak ?? 0,
+    lastActiveDate: profile?.last_active_date
+      ? new Date(profile.last_active_date).toISOString()
+      : null,
+    longestStreak: profile?.longest_streak ?? 0,
   };
 }
 
@@ -53,6 +62,9 @@ export function useUserProgress(userId: string | null) {
   const [userData, setUserData] = useState<UserData>({
     completedLessons: [],
     xp: 0,
+    currentStreak: 0,
+    lastActiveDate: null,
+    longestStreak: 0,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,13 +74,13 @@ export function useUserProgress(userId: string | null) {
   // Track if we already attempted migration for this userId
   const migrationAttempted = useRef(false);
 
-  // ── Effect: Fetch progress (no synchronous setState in body) ─────────────
+  // ── Effect: Fetch progress + profile (no synchronous setState in body) ─
 
   useEffect(() => {
     let cancelled = false;
 
     const run = async () => {
-      // No userId → just stop loading (setLoading inside async fn, not effect body)
+      // No userId → just stop loading
       if (!userId) {
         if (!cancelled) setLoading(false);
         return;
@@ -77,16 +89,32 @@ export function useUserProgress(userId: string | null) {
       if (!cancelled) setLoading(true);
 
       try {
-        // 1. Fetch server data
-        const { data, error: fetchError } = await supabase
+        // 1. Fetch user_progress data
+        const { data: progressData, error: fetchError } = await supabase
           .from("user_progress")
           .select("*")
           .eq("user_id", userId);
 
         if (fetchError) throw fetchError;
 
-        const serverData = (data as UserProgress[]) || [];
-        let currentData = aggregateProgress(serverData);
+        // 2. Fetch profile data (streak, last_active_date)
+        // Note: longest_streak will be added to the database schema manually
+        const { data: rawProfileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("streak, last_active_date")
+          .eq("id", userId)
+          .single();
+
+        if (profileError) throw profileError;
+
+        const serverData = (progressData as UserProgress[]) || [];
+        // Cast to include longest_streak (will be 0 until column is added)
+        const profileData = {
+          streak: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.streak ?? 0,
+          longest_streak: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.longest_streak ?? 0,
+          last_active_date: (rawProfileData as { streak: number; last_active_date: string | null; longest_streak?: number })?.last_active_date ?? null,
+        };
+        let currentData = aggregateProgress(serverData, profileData);
 
         if (!cancelled) setUserData(currentData);
 
@@ -116,8 +144,19 @@ export function useUserProgress(userId: string | null) {
                   .select("*")
                   .eq("user_id", userId);
 
+                const mergedProfileData = await supabase
+                  .from("profiles")
+                  .select("streak, last_active_date")
+                  .eq("id", userId)
+                  .single();
+
+                const mergedProfile = {
+                  streak: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.streak ?? 0,
+                  longest_streak: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.longest_streak ?? 0,
+                  last_active_date: (mergedProfileData.data as { streak: number; last_active_date: string | null; longest_streak?: number })?.last_active_date ?? null,
+                };
                 const mergedData = (merged as UserProgress[]) || [];
-                currentData = aggregateProgress(mergedData);
+                currentData = aggregateProgress(mergedData, mergedProfile);
 
                 if (!cancelled) {
                   setUserData(currentData);
@@ -152,20 +191,29 @@ export function useUserProgress(userId: string | null) {
       if (!userId) return;
 
       const previousData = { ...userData };
+      const hasNewLesson = !userData.completedLessons.includes(lessonId);
 
-      setUserData((prev) => {
-        const isAlreadyCompleted = prev.completedLessons.includes(lessonId);
-        return {
-          ...prev,
-          completedLessons: isAlreadyCompleted
-            ? prev.completedLessons
-            : [...prev.completedLessons, lessonId],
-          xp: isAlreadyCompleted ? prev.xp : prev.xp + score,
-        };
-      });
+      // Calculate new streak using the pure function
+      const newStreak = hasNewLesson
+        ? calculateStreak(userData.currentStreak, userData.lastActiveDate)
+        : userData.currentStreak;
+
+      // Optimistic update
+      setUserData((prev) => ({
+        ...prev,
+        completedLessons: hasNewLesson
+          ? [...prev.completedLessons, lessonId]
+          : prev.completedLessons,
+        xp: hasNewLesson ? prev.xp + score : prev.xp,
+        currentStreak: newStreak,
+        lastActiveDate: hasNewLesson
+          ? new Date().toISOString().split("T")[0]
+          : prev.lastActiveDate,
+      }));
 
       try {
-        const { error } = await supabase.from("user_progress").upsert(
+        // Save user_progress
+        const { error: progressError } = await supabase.from("user_progress").upsert(
           {
             user_id: userId,
             lesson_id: lessonId,
@@ -176,10 +224,21 @@ export function useUserProgress(userId: string | null) {
           { onConflict: "user_id,lesson_id" }
         );
 
-        if (error) throw error;
+        if (progressError) throw progressError;
+
+        // Update profile streak (last_active_date will be updated manually below)
+        const { error: profileError } = await supabase
+          .from("profiles")
+          .update({
+            streak: newStreak,
+            last_active_date: new Date().toISOString(),
+          })
+          .eq("id", userId);
+
+        if (profileError) throw profileError;
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "Unknown error");
-        setUserData(previousData);
+        setUserData(previousData); // Rollback
       }
     },
     [userId, userData, supabase]

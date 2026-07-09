@@ -12,6 +12,9 @@ interface DashboardViewProps {
   userData: {
     completedLessons: string[];
     xp: number;
+    currentStreak: number;
+    lastActiveDate: string | null;
+    longestStreak: number;
   };
   selectedLevel: string | null;
   openChapter: (chapterIndex: number) => void;

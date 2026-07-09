@@ -24,6 +24,9 @@ interface ProfileViewProps {
   userData: {
     completedLessons: string[];
     xp: number;
+    currentStreak: number;
+    lastActiveDate: string | null;
+    longestStreak: number;
   };
   onBack: () => void;
 }
@@ -38,15 +41,15 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
       acc +
       getChaptersForLevel(level.id).reduce(
         (chapterAcc, chapter) => chapterAcc + chapter.lessons.length,
-        0,
+        0
       ),
-    0,
+    0
   );
 
   // Profile editing state
   const [isEditingName, setIsEditingName] = useState(false);
   const [displayName, setDisplayName] = useState(
-    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم",
+    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم"
   );
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<{
@@ -118,9 +121,7 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
 
   const handleCancelName = () => {
     setDisplayName(
-      user?.user_metadata?.full_name ||
-        user?.email?.split("@")[0] ||
-        "المستخدم",
+      user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم"
     );
     setIsEditingName(false);
     setSaveMessage(null);
@@ -158,7 +159,7 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
       }, 2000);
     } catch (e: unknown) {
       setPasswordError(
-        e instanceof Error ? e.message : "فشل تحديث كلمة المرور",
+        e instanceof Error ? e.message : "فشل تحديث كلمة المرور"
       );
     } finally {
       setPasswordLoading(false);
@@ -379,7 +380,7 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
               <span className="text-3xl font-black text-indigo-700 dark:text-indigo-300">
                 {totalLessons > 0
                   ? Math.round(
-                      (userData.completedLessons.length / totalLessons) * 100,
+                      (userData.completedLessons.length / totalLessons) * 100
                     )
                   : 0}
               </span>

@@ -24,7 +24,13 @@ interface Lesson {
 
 interface ChapterViewProps {
   activeChapterIndex: number;
-  userData: { completedLessons: string[]; xp: number };
+  userData: {
+    completedLessons: string[];
+    xp: number;
+    currentStreak: number;
+    lastActiveDate: string | null;
+    longestStreak: number;
+  };
   selectedLevel: string | null;
   startLesson: (index: number) => void;
   setView: (view: string) => void;

@@ -27,6 +27,9 @@ export type ActivityLogUpdate = SupabaseDatabase["public"]["Tables"]["activity_l
 export interface UserData {
   completedLessons: string[];
   xp: number;
+  currentStreak: number;
+  lastActiveDate: string | null;
+  longestStreak: number;
 }
 
 // ─── Generic helpers (اختياري) ──────────────────────────────────────────────

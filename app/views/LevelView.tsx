@@ -24,6 +24,9 @@ interface LevelViewProps {
   userData: {
     completedLessons: string[];
     xp: number;
+    currentStreak: number;
+    lastActiveDate: string | null;
+    longestStreak: number;
   };
   openLevel: (levelId: string) => void;
 }
@@ -62,7 +65,7 @@ function isLevelUnlocked(levelId: string, completedLessons: string[]): boolean {
   const prevLevelTotal = getLevelLessonCount(prevLevelId);
   const prevLevelCompleted = getLevelCompletedCount(
     prevLevelId,
-    completedLessons,
+    completedLessons
   );
 
   if (prevLevelTotal === 0) return false;
@@ -77,12 +80,12 @@ function isLevelUnlocked(levelId: string, completedLessons: string[]): boolean {
 function calculateLevelProgress(levelId: string, completedLessons: string[]) {
   const chapters = getChaptersForLevel(levelId);
   const levelLessonIds = new Set(
-    chapters.flatMap((ch) => ch.lessons.map((l) => l.id)),
+    chapters.flatMap((ch) => ch.lessons.map((l) => l.id))
   );
 
   const total = levelLessonIds.size;
   const completed = completedLessons.filter((id) =>
-    levelLessonIds.has(id),
+    levelLessonIds.has(id)
   ).length;
   const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -94,14 +97,14 @@ function calculateLevelProgress(levelId: string, completedLessons: string[]) {
  */
 function getNextLesson(
   levelId: string,
-  completedLessons: string[],
+  completedLessons: string[]
 ): { id: string; title: string } | null {
   const chapters = getChaptersForLevel(levelId);
   const allLessons = chapters.flatMap((ch) => ch.lessons);
 
   // Find first lesson that hasn't been completed
   const firstLesson = allLessons.find(
-    (l: { id: string; title: string }) => !completedLessons.includes(l.id),
+    (l: { id: string; title: string }) => !completedLessons.includes(l.id)
   );
   return firstLesson || null;
 }
@@ -116,7 +119,7 @@ function areAllLessonsCompleted(completedLessons: string[]): boolean {
 
   // Count unique completed lessons that exist in the curriculum
   const validCompletedLessons = completedLessons.filter((id) =>
-    allLessons.some((l) => l.id === id),
+    allLessons.some((l) => l.id === id)
   );
 
   return validCompletedLessons.length >= totalLessons && totalLessons > 0;
@@ -127,17 +130,17 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
 
   // Calculate progress for each level
   const levelProgress = LEVELS.map((level) =>
-    calculateLevelProgress(level.id, completedLessons),
+    calculateLevelProgress(level.id, completedLessons)
   );
 
   // Check unlock status for each level
   const levelUnlocked = LEVELS.map((level) =>
-    isLevelUnlocked(level.id, completedLessons),
+    isLevelUnlocked(level.id, completedLessons)
   );
 
   // Get unlock messages
   const unlockMessages = LEVELS.map((level) =>
-    getUnlockMessage(level.id, completedLessons),
+    getUnlockMessage(level.id, completedLessons)
   );
 
   // Get next lesson for the first unlocked level
@@ -155,7 +158,7 @@ export const LevelView = ({ userData, openLevel }: LevelViewProps) => {
     [...allLessons]
       .reverse()
       .find((l: { id: string; title: string }) =>
-        completedLessons.includes(l.id),
+        completedLessons.includes(l.id)
       ) || null;
 
   // Daily tip
