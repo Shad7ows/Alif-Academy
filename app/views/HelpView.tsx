@@ -15,6 +15,8 @@ import {
   Mail,
   Globe,
   Users,
+  Send,
+  Keyboard,
 } from "lucide-react";
 
 interface HelpViewProps {
@@ -32,13 +34,13 @@ const FAQ_DATA: FAQ[] = [
   {
     question: "ما هي مدرسة ألف؟",
     answer:
-      "مدرسة ألف هي منصة تعليمية عربية متخصصة في تعليم البرمجة بلغة HTML5. نوفر لك مسارًا تعليميًا منظمًا يبدأ معك من الصفر حتى أن تصبح قادرًا على إنشاء مواقع ويب تفاعلية باستخدام أدوات قوية مثل VS Code.",
+      "مدرسة ألف هي منصة تعليمية عربية متخصصة في تعليم البرمجة بلغة ألف النسخة 5. نوفر لك مسارًا تعليميًا منظمًا يبدأ معك من الصفر حتى أن تصبح قادرًا على إنشاء برامج تفاعلية باستخدام أدوات قوية محرر طيف.",
     icon: BookOpen,
   },
   {
     question: "كيف أبدأ التعلم؟",
     answer:
-      "ابدأ بالانتقال إلى لوحة التحكم والضغط على أول فصل. كل درس يحتوي على شرح تفاعبي في محرر ألف آي دي (Alif IDE) مع أمثلة عملية. بعد إكمال كل درس ستحصل على اختبار صغير لتثبيت المعلومات.",
+      "ابدأ بالانتقال إلى لوحة التحكم والضغط على أول مستوى. كل درس يحتوي على شرح تفاعلي مع أمثلة عملية في محرر إفتراضي. بعد إكمال كل درس ستحصل على اختبار صغير لتثبيت المعلومات.",
     icon: Rocket,
   },
   {
@@ -50,13 +52,13 @@ const FAQ_DATA: FAQ[] = [
   {
     question: "هل أحتاج لتثبيت برامج؟",
     answer:
-      "لا! محرر ألف آي دي يعمل مباشرة في المتصفح. كل ما تحتاجه هو متصفح ويب واتصال بالإنترنت. يمكنك أيضًا استخدام VS Code على جهازك لتجربة أكثر تقدمًا.",
+      "لا! يتوفر محرر للغة ألف عبر المتصفح. كل ما تحتاجه هو متصفح واتصال بالإنترنت. يمكنك أيضًا استخدام محرر طيف على جهازك لتجربة أكثر تقدمًا.",
     icon: Lightbulb,
   },
   {
     question: "كيف يعمل نظام النقاط والإنجازات؟",
     answer:
-      "عند إكمال كل درس ونجاحك في الاختبار تحصل على نقاط خبرة (XP). كلما زادت نقاطك، كلما فتحت إنجازات جديدة. هذا النظام يساعدك على تتبع تقدمك ويحفزك على الاستمرار.",
+      "عند إكمال كل درس ونجاحك في الاختبار تحصل على نقاط خبرة. كلما زادت نقاطك، كلما فتحت إنجازات جديدة. هذا النظام يساعدك على تتبع تقدمك ويحفزك على الاستمرار.",
     icon: Users,
   },
   {
@@ -81,7 +83,7 @@ const QUICK_START_STEPS: Step[] = [
     step: 1,
     title: "تصفح الفصول",
     description:
-      "انتقل إلى لوحة التحكم واختر الفصل الذي تريد البدء فيه. كل فصل يحتوي على مجموعة دروس مترتبة.",
+      "انتقل إلى لوحة التحكم واختر المستوى أو الفصل الذي تريد البدء فيه. كل فصل يحتوي على مجموعة دروس مترتبة.",
     icon: BookOpen,
     color: "from-blue-500 to-blue-600",
   },
@@ -89,7 +91,7 @@ const QUICK_START_STEPS: Step[] = [
     step: 2,
     title: "اقرأ الدرس",
     description:
-      "اقرأ الشرح بعناية في محرر ألف آي دي. كل درس يحتوي على أكواد عملية وأمثلة تفاعلية.",
+      "اقرأ الشرح بعناية في كل درس. كل درس يحتوي على شيفرة عملية وأمثلة تفاعلية.",
     icon: Lightbulb,
     color: "from-amber-500 to-amber-600",
   },
@@ -97,8 +99,8 @@ const QUICK_START_STEPS: Step[] = [
     step: 3,
     title: "جرّب بنفسك",
     description:
-      "عدّل على الأكواد وجرب بنفسك في المحرر التفاعلي. التجربة العملية هي أفضل طريقة للتعلم.",
-    icon: Rocket,
+      "عدّل على البرامج وجرب بنفسك في المحرر التفاعلي - يتوفر بشكل منفصل -. التجربة العملية هي أفضل طريقة للتعلم.",
+    icon: Keyboard,
     color: "from-emerald-500 to-emerald-600",
   },
   {
@@ -251,7 +253,7 @@ export function HelpView({ onBack }: HelpViewProps) {
               },
               {
                 title: "جرّب بنفسك",
-                desc: "لا تكتفِ بالقراءة. عدّل الأكواد وجرب أشياء جديدة في المحرر.",
+                desc: "لا تكتفِ بالقراءة. عدّل البرامج وجرب أشياء جديدة في المحرر.",
               },
               {
                 title: "لا تخف من الخطأ",
@@ -300,7 +302,7 @@ export function HelpView({ onBack }: HelpViewProps) {
               البريد الإلكتروني
             </h4>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              support@aliflang.dev
+              aliflang47@gmail.com
             </p>
           </div>
 
@@ -313,20 +315,20 @@ export function HelpView({ onBack }: HelpViewProps) {
               الموقع الإلكتروني
             </h4>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              aliflang.dev
+              https://www.aliflang.org
             </p>
           </div>
 
           {/* Community */}
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-shadow duration-300 text-center">
             <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl inline-block mb-3">
-              <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+              <Send className="w-6 h-6 text-purple-600 dark:text-purple-400" />
             </div>
             <h4 className="font-bold text-slate-800 dark:text-white mb-1">
               المجتمع
             </h4>
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              انضم لمجتمع مدرسة ألف
+              https://t.me/aliflang
             </p>
           </div>
         </div>

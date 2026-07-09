@@ -33,7 +33,7 @@ const FEATURES: Feature[] = [
   {
     title: "تعلم تفاعلي",
     description:
-      "محرر أكواد مدمج يعمل مباشرة في المتصفح مع أمثلة عملية وتطبيقات تفاعلية.",
+      "محرر شيفرات مدمج يعمل مباشرة في المتصفح مع أمثلة عملية وتطبيقات تفاعلية.",
     icon: Code2,
     color: "text-blue-600 dark:text-blue-400",
     bgLight: "bg-blue-50 dark:bg-blue-900/20",
@@ -42,7 +42,7 @@ const FEATURES: Feature[] = [
   {
     title: "محتوى عربي 100%",
     description:
-      "جميع الدروس والشروحات مكتوبة بالعربية الفصحى مع أمثلة من السياق المحلي.",
+      "جميع الدروس والشروحات مكتوبة بالعربية الفصحى مع أمثلة وإختبارات.",
     icon: Globe,
     color: "text-emerald-600 dark:text-emerald-400",
     bgLight: "bg-emerald-50 dark:bg-emerald-900/20",
@@ -97,7 +97,7 @@ const TECH_STACK: TechItem[] = [
   {
     name: "Next.js",
     category: "إطار العمل",
-    description: "إطار عمل React للتطبيقات الويب",
+    description: "إطار عمل React لتطبيقات الويب",
   },
   {
     name: "TypeScript",
@@ -111,7 +111,7 @@ const TECH_STACK: TechItem[] = [
   },
   {
     name: "Supabase",
-    category: "الباك إند",
+    category: "قواعد البيانات",
     description: "قاعدة بيانات والمصادقة",
   },
   {
@@ -122,7 +122,7 @@ const TECH_STACK: TechItem[] = [
   {
     name: "VS Code",
     category: "أدوات",
-    description: "محرر الأكواد المدمج",
+    description: "محرر البرامج",
   },
 ];
 
@@ -178,17 +178,17 @@ export function AboutView({ onBack }: AboutViewProps) {
               <span className="font-bold text-indigo-600 dark:text-indigo-400">
                 منظمة ألف
               </span>
-              ، متخصصة في تعليم البرمجة بلغة HTML5 للمبتدئين.
+              ، متخصصة في تعليم البرمجة بلغة ألف النسخة الخامسة للمبتدئين.
             </p>
             <p>
               نؤمن بأن التعليم يجب أن يكون حقًا للجميع، لذلك قمنا بتطوير محتوى
               تعليمي عربي عالي الجودة يساعد المتعلمين على رحلة تعلم البرمجة من
-              الصفر حتى يتمكنوا من إنشاء مواقع ويب تفاعلية.
+              الصفر حتى يتمكنوا من إنشاء برامج متنوعة وتفاعلية.
             </p>
             <p>
-              تستخدم المنصة محرر أكواد مدمج فريد (Alif IDE) يعمل مباشرة في
-              المتصفح، مما يتيح للمتعلمين تجربة عملية فورية دون الحاجة لتثبيت أي
-              برامج إضافية.
+              تستخدم المنصة محرر شيفرة متوافق مع لغة ألف5 يعمل مباشرة في المتصفح
+              - يعمل بشكل منفصل عن المنصة التعليمية -، مما يتيح للمتعلمين تجربة
+              عملية فورية دون الحاجة لتثبيت أي برامج إضافية.
             </p>
           </div>
         </div>
@@ -207,8 +207,8 @@ export function AboutView({ onBack }: AboutViewProps) {
             </h4>
           </div>
           <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-            أن نكون المنصة العربية الأولى لتعليم البرمجة للمبتدئين، ونساعد في
-            تشكيل جيل من المطورين العرب المبدعين.
+            أن نكون المنصة العربية الأولى لتعليم البرمجة باللغة العربية
+            للمبتدئين، ونساعد في تشكيل جيل من المطورين العرب المبدعين.
           </p>
         </div>
 
@@ -364,7 +364,7 @@ export function AboutView({ onBack }: AboutViewProps) {
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
                 هذا المشروع مرخص تحت رخصة{" "}
                 <span className="font-bold text-indigo-600 dark:text-indigo-400">
-                  MIT
+                  رخصة ألف
                 </span>{" "}
                 وهو مفتوح المصدر. يمكنك استخدامه وتعديله وتوزيعه بحرية وفقًا
                 لأحكام الرخصة.

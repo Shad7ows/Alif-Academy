@@ -119,22 +119,22 @@ export const StatisticsView = ({ userData, onBack }: StatisticsViewProps) => {
 
         {/* Main Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+          <div className="bg-slate-900/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <Trophy className="w-6 h-6 mx-auto mb-2 text-green-400" />
             <p className="text-2xl font-black">{stats.completedLessons}</p>
             <p className="text-indigo-100 text-xs">دروس مكتملة</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
-            <Star className="w-6 h-6 mx-auto mb-2 text-amber-400 fill-amber-300" />
+          <div className="bg-slate-900/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+            <Star className="w-6 h-6 mx-auto mb-2 text-amber-300 fill-amber-300" />
             <p className="text-2xl font-black">{stats.xp}</p>
             <p className="text-indigo-100 text-xs">نقطة خبرة</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+          <div className="bg-slate-900/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <Target className="w-6 h-6 mx-auto mb-2 text-purple-400" />
             <p className="text-2xl font-black">{stats.progressPercentage}%</p>
             <p className="text-indigo-100 text-xs">نسبة الإكمال</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-center">
+          <div className="bg-slate-900/10 backdrop-blur-sm rounded-2xl p-4 text-center">
             <TrendingUp className="w-6 h-6 mx-auto mb-2 text-sky-400" />
             <p className="text-2xl font-black">{currentStreak}</p>
             <p className="text-indigo-100 text-xs">
