@@ -76,10 +76,34 @@ export const SettingsView = ({ onBack }: SettingsViewProps) => {
     setDeleteLoading(true);
 
     try {
-      // Delete the auth user (this will also delete associated profile due to CASCADE)
-      const { error } = await supabase.auth.admin.deleteUser(user!.id);
+      // Get the user's access token for authentication
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const accessToken = session?.access_token;
 
-      if (error) throw error;
+      if (!accessToken) {
+        throw new Error("يجب إعادة تسجيل الدخول لحذف الحساب");
+      }
+
+      // Call the Edge Function to delete the account
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/delete-account`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ userId: user!.id }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "فشل حذف الحساب");
+      }
 
       // Show success message
       setDeleteSuccess(true);

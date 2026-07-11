@@ -157,6 +157,8 @@ export function SideMenu({
                       src={avatarUrl}
                       alt="Avatar"
                       className="w-full h-full rounded-full object-cover"
+                      width="32"
+                      height="32"
                     />
                   ) : (
                     <span className="text-white text-xl font-bold">

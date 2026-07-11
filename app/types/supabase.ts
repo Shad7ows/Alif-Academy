@@ -50,7 +50,7 @@ export type Database = {
           full_name: string | null
           id: string
           last_active_date: string | null
-          longest_streak: number
+          longest_streak: number | null
           streak: number | null
           updated_at: string | null
           xp: number | null
@@ -63,7 +63,7 @@ export type Database = {
           full_name?: string | null
           id: string
           last_active_date?: string | null
-          longest_streak?: number
+          longest_streak?: number | null
           streak?: number | null
           updated_at?: string | null
           xp?: number | null
@@ -76,7 +76,7 @@ export type Database = {
           full_name?: string | null
           id?: string
           last_active_date?: string | null
-          longest_streak?: number
+          longest_streak?: number | null
           streak?: number | null
           updated_at?: string | null
           xp?: number | null

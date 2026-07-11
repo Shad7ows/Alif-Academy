@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "update-types": "supabase gen types typescript --project-id yfizjzwretcbsdgzfkks --schema public > app/types/supabase.ts"
+    "update-types": "npm run link:project && supabase gen types typescript --schema public > app/types/supabase.ts",
+    "deploy:functions:all": "npm run link:project && supabase functions deploy",
+    "link:project": "supabase link || echo 'Note: Use 'supabase login' first if not logged in'"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
