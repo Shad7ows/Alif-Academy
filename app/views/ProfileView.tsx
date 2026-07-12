@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { LEVELS, getChaptersForLevel } from "@/chapters";
+import Image from "next/image";
 import {
   User,
   Mail,
@@ -41,21 +42,23 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
       acc +
       getChaptersForLevel(level.id).reduce(
         (chapterAcc, chapter) => chapterAcc + chapter.lessons.length,
-        0
+        0,
       ),
-    0
+    0,
   );
 
   // Profile editing state
   const [isEditingName, setIsEditingName] = useState(false);
   const [displayName, setDisplayName] = useState(
-    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم"
+    user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم",
   );
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
+  const [imageError, setImageError] = useState(false);
 
   // Password change state
   const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -67,25 +70,31 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
-  // Fetch full name from profiles table on mount
+  // Fetch full name and avatar URL from profiles table on mount
   useEffect(() => {
-    const fetchName = async () => {
+    const fetchProfile = async () => {
       if (!user?.id) return;
       try {
         const { data, error } = await supabase
           .from("profiles")
-          .select("full_name")
+          .select("full_name, avatar_url")
           .eq("id", user.id)
           .single();
 
-        if (!error && data?.full_name) {
-          setDisplayName(data.full_name);
+        if (!error) {
+          if (data?.full_name) {
+            setDisplayName(data.full_name);
+          }
+          if (data?.avatar_url && data.avatar_url.trim() !== "") {
+            setAvatarUrl(data.avatar_url);
+            setImageError(false);
+          }
         }
       } catch {
         // Fallback to user_metadata or email
       }
     };
-    fetchName();
+    fetchProfile();
   }, [user?.id, supabase]);
 
   const handleSaveName = async () => {
@@ -121,7 +130,9 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
 
   const handleCancelName = () => {
     setDisplayName(
-      user?.user_metadata?.full_name || user?.email?.split("@")[0] || "المستخدم"
+      user?.user_metadata?.full_name ||
+        user?.email?.split("@")[0] ||
+        "المستخدم",
     );
     setIsEditingName(false);
     setSaveMessage(null);
@@ -159,7 +170,7 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
       }, 2000);
     } catch (e: unknown) {
       setPasswordError(
-        e instanceof Error ? e.message : "فشل تحديث كلمة المرور"
+        e instanceof Error ? e.message : "فشل تحديث كلمة المرور",
       );
     } finally {
       setPasswordLoading(false);
@@ -171,6 +182,11 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
       return displayName.charAt(0);
     }
     return user?.email?.[0]?.toUpperCase() || "U";
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+    setAvatarUrl(null);
   };
 
   return (
@@ -192,10 +208,21 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
         <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
           {/* Avatar */}
           <div className="relative shrink-0">
-            <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/30">
-              <span className="text-white text-3xl font-black">
-                {getAvatarInitial()}
-              </span>
+            <div className="w-24 h-24 rounded-full bg-slate-100 backdrop-blur-sm flex items-center justify-center ring-4 ring-white/30 overflow-hidden">
+              {avatarUrl && !imageError ? (
+                <Image
+                  src={avatarUrl}
+                  alt={displayName}
+                  className="w-full h-full object-cover"
+                  width={64}
+                  height={64}
+                  onError={handleImageError}
+                />
+              ) : (
+                <span className="text-white text-3xl font-black">
+                  {getAvatarInitial()}
+                </span>
+              )}
             </div>
             <div className="absolute bottom-0 right-0 w-6 h-6 bg-emerald-400 rounded-full border-3 border-white shadow-sm" />
           </div>
@@ -380,7 +407,7 @@ export const ProfileView = ({ userData, onBack }: ProfileViewProps) => {
               <span className="text-3xl font-black text-indigo-700 dark:text-indigo-300">
                 {totalLessons > 0
                   ? Math.round(
-                      (userData.completedLessons.length / totalLessons) * 100
+                      (userData.completedLessons.length / totalLessons) * 100,
                     )
                   : 0}
               </span>

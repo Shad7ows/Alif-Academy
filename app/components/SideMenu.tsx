@@ -151,14 +151,14 @@ export function SideMenu({
             <div className="flex items-start gap-4">
               {/* Circular Avatar */}
               <div className="relative shrink-0">
-                <div className="w-16 h-16 rounded-full bg-linear-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-md ring-4 ring-white">
+                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center shadow-md ring-4 ring-white">
                   {avatarUrl ? (
                     <Image
                       src={avatarUrl}
                       alt="Avatar"
                       className="w-full h-full rounded-full object-cover"
-                      width="32"
-                      height="32"
+                      width={64}
+                      height={64}
                     />
                   ) : (
                     <span className="text-white text-xl font-bold">
