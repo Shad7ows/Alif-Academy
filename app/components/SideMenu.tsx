@@ -151,7 +151,13 @@ export function SideMenu({
             <div className="flex items-start gap-4">
               {/* Circular Avatar */}
               <div className="relative shrink-0">
-                <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center shadow-md ring-4 ring-white">
+                <div
+                  className={`w-16 h-16 rounded-full ${
+                    avatarUrl
+                      ? "bg-slate-100 dark:bg-slate-900"
+                      : "bg-indigo-500"
+                  } flex items-center justify-center shadow-md ring-3 ring-white`}
+                >
                   {avatarUrl ? (
                     <Image
                       src={avatarUrl}
