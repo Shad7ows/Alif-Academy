@@ -156,7 +156,7 @@ export function SideMenu({
                     avatarUrl
                       ? "bg-slate-100 dark:bg-slate-900"
                       : "bg-indigo-500"
-                  } flex items-center justify-center shadow-md ring-3 ring-white`}
+                  } flex items-center justify-center shadow-md ring-3 ring-slate-300/50`}
                 >
                   {avatarUrl ? (
                     <Image
