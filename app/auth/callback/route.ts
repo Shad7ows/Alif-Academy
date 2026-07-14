@@ -1,3 +1,5 @@
+"use client";
+
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
@@ -14,7 +16,5 @@ export async function GET(request: Request) {
     }
   }
 
-  return NextResponse.redirect(
-    `${origin}/auth/sign-in?error=callback_failed`
-  );
+  return NextResponse.redirect(`${origin}/auth/sign-in?error=callback_failed`);
 }
