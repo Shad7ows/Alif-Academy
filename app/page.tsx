@@ -232,6 +232,11 @@ export default function AlifProPlatform() {
             selectedLevel={selectedLevel}
             startLesson={startLesson}
             setView={setView}
+            totalChapters={activeChapters.length}
+            onNavigateToChapter={(index) => {
+              setActiveChapterIndex(index);
+              window.scrollTo(0, 0);
+            }}
           />
         )}
         {view === "lesson" && (

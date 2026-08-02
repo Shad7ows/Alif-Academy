@@ -1,7 +1,13 @@
 "use client";
 
 import type { LucideProps } from "lucide-react";
-import { CheckCircle, ArrowRight, PlayCircle, Lock } from "lucide-react";
+import {
+  CheckCircle,
+  ArrowRight,
+  PlayCircle,
+  Lock,
+  ChevronLeft,
+} from "lucide-react";
 import { LEVELS, getChaptersForLevel } from "../chapters";
 
 interface Quiz {
@@ -34,6 +40,8 @@ interface ChapterViewProps {
   selectedLevel: string | null;
   startLesson: (index: number) => void;
   setView: (view: string) => void;
+  totalChapters: number;
+  onNavigateToChapter: (index: number) => void;
 }
 
 export const ChapterView = ({
@@ -42,6 +50,7 @@ export const ChapterView = ({
   selectedLevel,
   startLesson,
   setView,
+  onNavigateToChapter,
 }: ChapterViewProps) => {
   // Get chapters for the selected level
   const chapters = selectedLevel
@@ -49,6 +58,16 @@ export const ChapterView = ({
     : LEVELS.flatMap((level) => getChaptersForLevel(level.id));
 
   const activeChapter = chapters[activeChapterIndex];
+
+  // Check if all lessons in the current chapter are completed
+  const allLessonsCompleted =
+    activeChapter.lessons.length > 0 &&
+    activeChapter.lessons.every((lesson) =>
+      userData.completedLessons.includes(lesson.id)
+    );
+
+  // Check if there's a next chapter
+  const hasNextChapter = activeChapterIndex < chapters.length - 1;
 
   return (
     <div className="max-w-3xl mx-auto animate-fade-in-up pb-20">
@@ -165,6 +184,27 @@ export const ChapterView = ({
           })}
         </div>
       </div>
+
+      {/* Next Chapter Button - Only show when all lessons are completed */}
+      {allLessonsCompleted && (
+        <div className="mt-25 flex justify-center animate-fade-in-up">
+          {hasNextChapter ? (
+            <button
+              onClick={() => onNavigateToChapter(activeChapterIndex + 1)}
+              className="flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-lg shadow-indigo-600/30 hover:shadow-xl hover:shadow-indigo-600/40 transition-all hover:-translate-y-1"
+            >
+              القسم التالي: {chapters[activeChapterIndex + 1]?.title}
+              <ChevronLeft className="w-7 h-7" />
+            </button>
+          ) : (
+            <div className="bg-emerald-500 text-white px-8 py-5 rounded-2xl font-black text-xl shadow-lg shadow-emerald-500/30 flex items-center gap-3">
+              <span className="text-3xl">🎉</span>
+              أحسنت! أكملت جميع الأقسام
+              <ChevronLeft className="w-7 h-7" />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
